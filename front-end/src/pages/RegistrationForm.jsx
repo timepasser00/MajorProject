@@ -29,8 +29,8 @@ const RegistrationForm = (props) => {
           });
           
           await Promise.resolve(curr_accounts);
-          await setWalletAddress(curr_accounts[0])
-          // await console.log("walletAddress :: " , walletAddress);
+          setWalletAddress(curr_accounts[0])
+          console.log("walletAddress :: " , walletAddress);
         }catch(error){
           console.log("Error connecting ..");
         }
@@ -39,7 +39,8 @@ const RegistrationForm = (props) => {
       }
     }
     metaCheck();
-  }, []);
+
+  }, [walletAddress]);
 
   const radioStyles1 = {
     position: 'absolute',
@@ -71,10 +72,16 @@ const RegistrationForm = (props) => {
         'Content-Type': 'application/json'
       }
     })
-    // console.log("curr_wallet_address: " + curr_accounts[0]);
-    const msg = await response.text();
-    console.log(msg);
-    alert(msg);      
+    if(func === "signUp"){
+      const msg = await response.text();
+      console.log(msg);
+      alert(msg); 
+    }else{
+      const msg = await response.text();
+      console.log(msg);
+      alert(msg); 
+    }
+         
   };
 
   return (
@@ -87,6 +94,7 @@ const RegistrationForm = (props) => {
           e.preventDefault()
           handleRequest("signUp")}}>SignUp</button>
         <h3>Log In Options:</h3>
+        {/* <h3>{walletAddress}</h3> */}
         <Options style = {radioStyles2} option ={selectedOption} handleOptionChange ={setSelectedOption}/>
         <button type="submit" onClick={(e)=>{
           e.preventDefault()
