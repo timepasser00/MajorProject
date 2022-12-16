@@ -11,11 +11,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
 
 const port = 3001
-// app.use((req,res,next) =>{
-//     next();
-// })
 
-app.use('/',homeRouter)
+app.use('/home',homeRouter)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

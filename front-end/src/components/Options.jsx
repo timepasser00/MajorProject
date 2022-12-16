@@ -1,30 +1,27 @@
 import React , {useState} from 'react'
 
 const Options = (props) => {
-    const [selectedOption, setSelectedOption] = useState("");
-
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-        const x = selectedOption;
-    };
-
+    // const [selectedOption, setSelectedOption] = useState("")
     
 
   return (
     <div>
         <label style={props.style}>
         <input type="radio" name="registration" value="patient" 
-        onChange={handleOptionChange}/>Patient
+        onChange={(e)=>
+        props.handleOptionChange(e.target.value)}/>Patient
         </label>
         <br />
         <label style={props.style}>
         <input type="radio" name="registration" value="hospital"
-        onChange={handleOptionChange} />Hospital 
+        onChange={(e)=>
+        props.handleOptionChange(e.target.value)} />Hospital 
         </label>
         <br />
         <label style={props.style}>
         <input type="radio" name="registration" value="lab"
-        onChange={handleOptionChange}/> Lab
+        onChange={(e)=>
+        props.handleOptionChange(e.target.value)}/> Lab
         </label>
         <br />
         <br />

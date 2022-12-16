@@ -18,7 +18,7 @@ const owner = '0xB6389Ab754A16808FcaBAaA3DdCcFE68A0Eb9648'
 
 // registers the usr 
 const signUp = async(req,res) => {
-    walletAddress = req.body.curr_accounts[0];
+    walletAddress = req.body.curr_accounts;
     console.log(walletAddress);
     const category = req.body.selectedOption;
     console.log(category);
@@ -32,10 +32,22 @@ const signUp = async(req,res) => {
     }
 }
 
-// const logIn = async(req,res)=>{
-//     walletAddress = req.body.curr_accounts[0];
-// }
+const logIn = async(req,res)=>{
+    walletAddress = req.body.curr_accounts;
+    console.log(walletAddress);
+    const category = req.body.selectedOption;
+    console.log(category);
+    try{
+        const instance = await base.at(contract_address);
+        await instance.addClient(walletAddress,category,{from:owner});
+        res.send("Successfully Registered"); 
+    }catch(error){
+        res.send("Invalid Request");
+        console.log("This is error message : " + error);
+    }
+}
 
 module.exports = {
-    signUp
+    signUp,
+    logIn
 }
