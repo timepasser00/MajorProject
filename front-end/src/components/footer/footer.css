@@ -1,0 +1,20 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .footer p {
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 50px;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }

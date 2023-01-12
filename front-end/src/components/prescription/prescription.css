@@ -1,0 +1,116 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    width: 100%;
+    /* border:2px solid red; */
+   flex-wrap: wrap;
+  }
+  .pagination button {
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    margin: 0 4px;
+    cursor: pointer;
+  }
+  .pagination button.active {
+    background-color: skyblue;
+    color: white;
+  }
+  .medical-record {
+    /* width: 8.5in;
+    height: 11in; */
+    width: 100%;
+    height: 100%;
+    
+    border: 1px solid black;
+    padding: 0.2in;
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+   
+  }
+  .patient-info {
+    margin-bottom: 15px;
+    display: flex;
+    
+    height: 20vh;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pateint-info-left {
+    margin-top: 0.2in;
+    display:flex;
+   
+    flex-direction: column;
+   
+    justify-content: center;
+    width:80%;
+    
+    /* flex:4; */
+  }
+  .patient-info img{
+    width: 20%;
+    height: 150px;
+  
+    /* margin-right: .2rem; */
+    align-self: flex-start;
+    flex: 1;
+  }
+  .patient-info h3 {
+    /* margin: 0; */
+    font-size: 14pt;
+   
+  }
+  .doctor-info {
+    margin-bottom: 0.5in;
+    margin-top: 0.2in;
+    display:flex;
+    flex-direction:column;
+    
+   
+  }
+  .doctor-info p {
+    margin: 0;
+    font-size: 12pt;
+  }
+  .symptoms {
+    margin-bottom: 0.5in;
+  }
+  .symptoms h4 {
+    margin: 0;
+    font-size: 14pt;
+  }
+  .symptoms ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .medications-list {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 0.3in;
+    
+  }
+  .medications-list th, .medications-list td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  .medications-list th {
+    text-align: left;
+    background-color: #ddd;
+  }
+  
+  .tests {
+    border-collapse: collapse;
+    width: 100%;
+   
+    
+  }
+  .tests th, .tests td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  .tests th {
+    text-align: left;
+    background-color: #ddd;
+  }
+  

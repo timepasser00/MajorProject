@@ -1,0 +1,29 @@
+.partners-section {
+    text-align: center;
+    margin-top: 10vh;
+  }
+  
+  .partners-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .partner-card {
+    width: 300px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .partner-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+  }
+  
+  .partner-card p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  

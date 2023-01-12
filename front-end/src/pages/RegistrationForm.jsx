@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import Options from '../components/Options'
+import { useDispatch, useSelector } from 'react-redux';
+import { assignWalletAddress } from '../redux/actions/patientActions';
+import PatientDetails from './PatientDetails';
+import {Link} from 'react-router-dom';
 const RegistrationForm = (props) => {
   const [walletAddress,setWalletAddress] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-
+  const tempwallet=useSelector((state)=>state.walletAddress)
+const dispatch = useDispatch();
   const formStyles = {
     width: '400px',
     height: '400px',
@@ -17,8 +22,9 @@ const RegistrationForm = (props) => {
     border: '1px solid #333'
     
   };
-  
+console.log("Im in registration form")
   useEffect(()=>{
+    
     // e.preventDefault();
     const metaCheck =  async()=>{
       if(window.ethereum){
@@ -31,6 +37,9 @@ const RegistrationForm = (props) => {
           await Promise.resolve(curr_accounts);
           setWalletAddress(curr_accounts[0])
           console.log("walletAddress :: " , walletAddress);
+          // dispatch({type: "SET_WALLET_ADDRESS", payload: walletAddress});
+          dispatch(assignWalletAddress(walletAddress));
+          console.log("tempwallet :: " , tempwallet);
         }catch(error){
           console.log("Error connecting ..");
         }
@@ -40,7 +49,7 @@ const RegistrationForm = (props) => {
     }
     metaCheck();
 
-  }, [walletAddress]);
+  }, [walletAddress,dispatch,tempwallet]);
 
   const radioStyles1 = {
     position: 'absolute',
@@ -86,6 +95,7 @@ const RegistrationForm = (props) => {
 
   return (
     <>
+    <div className='register-app'>
       <h1>Health Block</h1>
       <form style={formStyles}>
         <h3>Sign Up  Options:</h3>
@@ -100,6 +110,8 @@ const RegistrationForm = (props) => {
           e.preventDefault()
           handleRequest("logIn")}}>Log In </button>
       </form>
+      <Link to="/patientDetails">Patient Details</Link>
+      </div>
     </>
   );
 };
