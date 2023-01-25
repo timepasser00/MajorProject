@@ -13,7 +13,7 @@ const DoctorSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  degree: String,
+  qualification: String,
     walletAddress: {
     type: String,
     // required: true,

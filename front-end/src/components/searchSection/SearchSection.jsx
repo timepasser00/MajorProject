@@ -1,17 +1,29 @@
 // SearchSection.js
 import React from 'react';
 import './searchSection.css';
+import { createSearchParams, Navigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SearchSection = () => {
 const [searchType,setSearchType]=useState("doctor")
 const [searchTerm,setSearchTerm]=useState("")
 const[results, setResults] = useState([]);
 const[error, setError] = useState('');
+const [query, setQuery] = useState('');
+const Navigate = useNavigate();
   const handleSubmit = (event) => {
 
     event.preventDefault();
-    console.log(searchType,searchTerm)
+    // console.log(searchType,searchTerm)
+    Navigate({
+      pathname: '/hospitals',
+      search:createSearchParams({
+        keyword:query
+      }).toString()
+    })
+
+
 
     // Validate form values
     
@@ -52,7 +64,7 @@ const[error, setError] = useState('');
         </label>
         <label htmlFor="search-term">
           Search Term:
-          <input type="text" id="search-term" name="searchTerm"  onChange={(e)=> setSearchTerm(e.target.value)} />
+          <input type="text" id="query" name="query"  onChange={(e)=> setQuery(e.target.value)} />
         </label>
         <button type="submit">Search</button>
       </form>

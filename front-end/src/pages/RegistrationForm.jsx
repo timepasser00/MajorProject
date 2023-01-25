@@ -4,6 +4,7 @@ import Options from '../components/Options'
 import { useDispatch, useSelector } from 'react-redux';
 import { assignWalletAddress } from '../redux/actions/patientActions';
 import PatientDetails from './PatientDetails';
+import { useNavigate } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 const RegistrationForm = (props) => {
   const [walletAddress,setWalletAddress] = useState("");
@@ -67,7 +68,16 @@ console.log("Im in registration form")
   function handleOptionChange(x){
     setSelectedOption(x);
   }
-  
+  const navigate = useNavigate();
+  const navigateToDetails = () => {
+    
+    if(selectedOption === "patient"){
+      navigate('/patientDetails');
+    }else{
+      navigate('/requestForm');
+    }
+    
+  }
   const handleRequest = async(func) => {
     console.log(walletAddress);
     console.log(selectedOption);
@@ -102,7 +112,7 @@ console.log("Im in registration form")
         <Options style = {radioStyles1} handleOptionChange={handleOptionChange}  />
         <button type="submit" onClick={(e)=> {
           e.preventDefault()
-          handleRequest("signUp")}}>SignUp</button>
+          navigateToDetails()}}>SignUp</button>
         <h3>Log In Options:</h3>
         {/* <h3>{walletAddress}</h3> */}
         <Options style = {radioStyles2} option ={selectedOption} handleOptionChange ={setSelectedOption}/>
@@ -110,7 +120,7 @@ console.log("Im in registration form")
           e.preventDefault()
           handleRequest("logIn")}}>Log In </button>
       </form>
-      <Link to="/patientDetails">Patient Details</Link>
+      <Link to="/requestForm">Join</Link>
       </div>
     </>
   );

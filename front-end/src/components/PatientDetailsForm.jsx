@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-const PatientDetailsForm = () => {
+const PatientDetailsForm = (props) => {
   const walletAddress = useSelector((state) => state.walletAddress);
   console.log("walletAddress from pform :: ", walletAddress);
   const [firstName, setFirstName] = useState("");
@@ -10,6 +10,8 @@ const PatientDetailsForm = () => {
   const [age, setAge] = useState(null);
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("walletAddress :: ", walletAddress);
@@ -26,6 +28,7 @@ const PatientDetailsForm = () => {
     const data = await response.json();
     if (!response.ok) {
       console.log("error");
+      alert("Error submitting details");
     }
     if (response.ok) {
       // props.getDetails(walletAddress);
@@ -33,6 +36,7 @@ const PatientDetailsForm = () => {
       setFirstName("");
       setLastName("");
       setEmail("");
+      alert("Details submitted successfully");
       // props.setFlag(true);
       console.log("success");
     }
