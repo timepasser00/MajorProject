@@ -35,19 +35,39 @@ const getAllHospitals = async (req, res) => {
     }
 }
 const registerDoctor = async (req, res) => {
-    const  {firstName,lastName,yearOfExperience,qualification,hospitalId}=req.body;
-     console.log(firstName,lastName,yearOfExperience,qualification,hospitalId);
+    const  {firstName,lastName,yearOfExperience,qualification}=req.body;
+     console.log(firstName,lastName,yearOfExperience,qualification);
+        const hospitalId=req.params.id;
  
      try{
          const hospital=await Hospital.findById(hospitalId);
+         console.log(hospital);
          
-         const doctor=await Doctor.create({firstName,lastName,yearOfExperience,qualification,hospital});
-         hospital.doctors.push(doctor);
+         const doctor=await Doctor.create({firstName,lastName,yearOfExperience,qualification,hospital:hospitalId});
+         console.log(doctor,"doctor");
+         hospital.doctors.push(doctor._id);
+            hospital.save();
          res.status(200).json({doctor});
      }catch(err){
          res.status(400).json({err:err.message});
      }
  }
+ const removeDoctor = async (req, res) => {
+   const doctorId=req.params.id;
+    try{
+        const doctor=await Doctor.findById(doctorId);
+        const hospitalId=doctor.hospital;
+        const hospital=await Hospital.findById(hospitalId);
+        hospital.doctors.pull(doctorId);
+        hospital.save();
+        doctor.remove();
+        res.status(200).json({doctor});
+    }catch(err){
+        res.status(400).json({err:err.message});
+    }
+}
+
+
 
 
 
@@ -55,5 +75,6 @@ module.exports={
     registerRequest,
     allRequests,
     getAllHospitals,
-    registerDoctor
+    registerDoctor,
+    removeDoctor
 }
