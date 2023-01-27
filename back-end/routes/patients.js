@@ -1,8 +1,11 @@
 const express = require("express");
-const { registerDetails,getDetails } = require("../controller/patientController");
+const { registerDetails,getDetails ,searchHospital} = require("../controller/patientController");
+const { checkSignUp } = require("../middleware/signUp");
 const router = express.Router();
 
 
-router.post("/patientDetails", registerDetails);
+router.post("/patientDetails",checkSignUp, registerDetails);
 router.post("/patientPersonalDetails", getDetails);
+
+router.get('/searchHospital/:query', searchHospital);
 module.exports = router;

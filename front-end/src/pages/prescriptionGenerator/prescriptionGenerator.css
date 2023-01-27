@@ -1,0 +1,11 @@
+.prescription-gen-container {
+  display: flex;
+}
+.pres-right {
+  width: 2480px;
+  /* height: 3508px; */
+}
+.pres-left {
+  padding: 12px;
+  width: 100%;
+}

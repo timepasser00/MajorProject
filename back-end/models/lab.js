@@ -5,10 +5,23 @@ const LabSchemma=new mongoose.Schema({
         type:String,
          // required: true,
     },
-    address:{
-        type:String,
-         // required: true,
-    },
+    address: {
+        //   type: mongoose.Schema.Types.ObjectId,
+        //   ref: 'Address',
+          // required: true,
+          city:{
+            type:String,
+        },
+        state:{
+            type:String,
+        },
+        country:{
+            type:String,
+        },
+        pincode:{
+            type:String,
+        }
+        },
     specialities:{
         type:[String],
          // required: true,

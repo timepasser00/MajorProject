@@ -1,28 +1,44 @@
 const mongoose = require('mongoose');
 
+
 const HospitalSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
   address: {
-    type: String,
-    // required: true,
+
+    city:{
+      type:String,
   },
-  specialties: [String],
+  state:{
+      type:String,
+  },
+  country:{
+      type:String,
+  },
+  pincode:{
+      type:String,
+  }
+  },
+  specialities:{
+    type:[String],
+  }, 
   doctors: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Doctor',
-  }],
+  }], 
   walletAddress: {
     type: String,
-    // required: true,
-    // unique: [true, "Wallet Address already exists"],
+    required: true,
+    unique: [true, "Wallet Address already exists"], 
   },
   contact: {
-    phone: String,
-    email: String,
+    type: String,
+    // required: true,
+    // unique: [true, "Contact already exists"],
   },
+
 });
 
 const Hospital = mongoose.model('Hospital', HospitalSchema);
