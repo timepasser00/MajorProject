@@ -3,7 +3,7 @@ import './prescription.css'
 import qr_code from '../../Assets/images/qr_sample.jpg'
 const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
   // Initialize the current page and set of items to display
-  console.log(symptoms)
+  // console.log(symptoms)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -41,7 +41,7 @@ const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
         <h4>Symptoms:</h4>
         <ul>
           {symptoms.slice(startIndex, endIndex).map((symptom, index) => (
-            <li key={index}>{symptom}</li>
+            <li key={index}>{symptom.label}</li>
           ))}
         </ul>
       </div>
@@ -71,12 +71,15 @@ const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
             <th>Medication</th>
             <th>Dosage</th>
             <th>Frequency</th>
+            <th>Duration</th>
           </tr>
           {medications.slice(startIndex, endIndex).map((medication, index) => (
             <tr key={index}>
               <td>{medication.name}</td>
               <td>{medication.dose}</td>
               <td>{medication.frequency}</td>
+              <td>{medication.duration}</td>
+              
             </tr>
           ))}
         </table>

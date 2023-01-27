@@ -10,8 +10,21 @@ const RequestSchema = new mongoose.Schema({
     required: true,
   },
   address: {
-    type: String,
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "Address",
     // required:true,
+    city:{
+      type:String,
+  },
+  state:{
+      type:String,
+  },
+  country:{
+      type:String,
+  },
+  pincode:{
+      type:String,
+  }
   },
   specialities: {
     type: [String],

@@ -27,8 +27,26 @@ const handleApprove = (id) => {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data,"data")
+        console.log(data,"data") 
+       
     })
+ 
+
+
+    setRequests(newRequests)
+    deleteRequest(id)
+    console.log(requests,"requests after approval")
+}
+const handleRejection= (id) => {
+    console.log(requests,"requests before rejection")
+    const newRequests = requests.filter((r) => r._id !== id)
+    setRequests(newRequests)
+    console.log(requests,"requests after rejection")
+    deleteRequest(id);
+}
+const deleteRequest = (id) => {
+
+
     fetch(`http://localhost:3001/admin/approve/${id}`, {
         method: "DELETE",
         headers: {
@@ -40,17 +58,10 @@ const handleApprove = (id) => {
     .then(data => {
         console.log(data,"data")
     })
+}
 
 
-    setRequests(newRequests)
-    console.log(requests,"requests after approval")
-}
-const handleRejection= (id) => {
-    console.log(requests,"requests before rejection")
-    const newRequests = requests.filter((r) => r._id !== id)
-    setRequests(newRequests)
-    console.log(requests,"requests after rejection")
-}
+
   return (
     
     <div className='main-admin-page'>

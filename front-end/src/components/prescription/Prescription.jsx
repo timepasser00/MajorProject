@@ -2,7 +2,7 @@ import React from "react";
 import Body from "./Body";
 import Header from "./Header";
 
-const Prescription = () => {
+const Prescription = (props) => {
   const data = {
     patient: {
       name: "John Doe",
@@ -16,77 +16,95 @@ const Prescription = () => {
       name: "Dr. John Doe referral",
     },
     symptoms: [
-      "fever",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
-      "cough",
-      "headache",
-      "diarrhea",
-      "nausea",
-      "vomiting",
+      {
+        label: "Fever",
+        value: "fever",
+      },
+      {
+        label: "Cough",
+        value: "cough",
+      },
+      {
+        label: "Headache",
+        value: "headache",
+      },
+      {
+        label: "Diarrhea",
+        value: "diarrhea",
+      },
+      {
+        label: "Nausea",
+        value: "nausea",
+      },
+      {
+        label: "Vomiting",
+        value: "vomiting",
+      },
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
+      // "cough",
+      // "headache",
+      // "diarrhea",
+      // "nausea",
+      // "vomiting",
     ],
     medications: [
       {
@@ -122,16 +140,18 @@ const Prescription = () => {
     ],
   };
   return (
-    <div>
+    <div className="prscription-container">
       <Header />
       <Body
-        patient={data.patient}
+        patient={props.patient}
         doctor={data.doctor}
         referral={data.referral}
-        symptoms={data.symptoms}
+        symptoms={props.symptoms}
         tests={data.tests}
-        medications={data.medications}
+        medications={props.medications}
+        
       />
+      
     </div>
   );
 };

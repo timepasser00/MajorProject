@@ -35,6 +35,7 @@ const RequestViewContainer = styled.div`
     font-size: 1.2rem;
     `;
 const RequestDetails = ({request}) => {
+  console.log("request :: " , request);
     const[isOpen,setIsOpen]=useState(false)
     if(!isOpen){
         return(
@@ -44,6 +45,7 @@ const RequestDetails = ({request}) => {
         )
     }
   return (
+    
     // <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',backgroundColor: 'white'}}>
     //   <button onClick={() => setIsOpen(false)}>Close</button>
     //   <h2>Request Details</h2>
@@ -59,6 +61,10 @@ const RequestDetails = ({request}) => {
      
       <Data>Request Type: {request.type}</Data>
       <Data>Contact: {request.contact}</Data>
+      {/* <Data>Address: {request.address}</Data> */}
+      {/* <Data>City: {request.address.city}</Data>
+      <Data>State: {request.addres.state}</Data> */}
+      {/* <Data>Pincode: {request.address.pincode}</Data> */}
     </RequestViewContainer>
   )
 }

@@ -1,8 +1,11 @@
 const express=require("express");
-const {registerRequest,allRequests}=require("../controller/hospitalController");
+const {registerRequest,allRequests,getAllHospitals, registerDoctor,removeDoctor}=require("../controller/hospitalController");
 
 const router=express.Router();
 
 router.post("/register",registerRequest)
 router.get("/requests",allRequests)
+router.get("/hospitals",getAllHospitals);
+router.post("/registerDoctor/:id",registerDoctor);
+router.delete("/removeDoctor/:id",removeDoctor);
 module.exports=router;
