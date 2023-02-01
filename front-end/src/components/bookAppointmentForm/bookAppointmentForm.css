@@ -1,0 +1,77 @@
+.bookAppointmentForm form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.bookAppointmentForm form input{
+    width: 200px;
+    height: 30px;
+    margin: 5px 0;
+    padding: 0 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.bookAppointmentForm-input{
+    display: flex;
+    flex-direction: column;
+
+}
+.slot-container{
+    display: flex;
+    
+}
+
+.slot-box{
+    
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.slot-pagination{
+ display: flex;
+
+}
+.slot-pagination button{
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.slot-pagination button:hover{
+    background-color: #ccc;
+}
+
+.slot-box:hover{
+    background-color: #aaa;
+}
+
+.bookAppointmentForm form >button{
+    width: 100px;
+    
+    margin: 5px 0;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}

@@ -18,14 +18,26 @@ const patientSchema = new Schema(
     },
     walletAddress: {
       type: String,
-      required: true,
-      unique: [true, "Wallet Address already exists"],
+      // required: true,
+      // unique: [true, "Wallet Address already exists"],
     },
     email: {
       type: String,
       required: true,
       unique: true,
     },
+    approvedDoctors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Doctor",
+      },
+    ],
+    approvedLabs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Lab",
+      },
+    ],
   },
   { timestamps: true }
 );

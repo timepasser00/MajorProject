@@ -7,8 +7,10 @@ const Navbar = () => {
   return (
     <nav className="navbar">
      <a><Link to="/login">Register/login</Link></a>
+      <a><Link to="/appointment">Appointment</Link></a>
+      <a><Link to="/hospitals">Hospitals</Link></a>
       
-      <a href="/hospitals">Hospitals</a>
+      {/* <a href="/hospitals"></a> */}
     </nav>
   );
 };
