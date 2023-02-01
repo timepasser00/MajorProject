@@ -12,13 +12,17 @@ import RegistrationRequest from "./components/registerationRequest/RegistrationR
 import HospitalList from "./pages/hospitalList/HospitalList";
 import PrescriptionGenerator from "./pages/prescriptionGenerator/PrescriptionGenerator";
 import RequestForm from "./pages/requestFrom/RequestForm";
+import Hospital from "./pages/hospital/Hospital";
+import BookAppointmentForm from "./components/bookAppointmentForm/BookAppointmentForm";
+import Appointment from "./pages/appointment/Appointment";
+import Patient from "./pages/patient/Patient";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-        <Route
+          <Route
             path="/home"
             element={
               <>
@@ -46,7 +50,7 @@ function App() {
             path="/requestForm"
             element={
               <>
-               <RequestForm/>
+                <RequestForm />
               </>
             }
           />
@@ -78,8 +82,15 @@ function App() {
             }
           />
           <Route path="/hospitals" element={<HospitalList />} />
-          <Route path = "/doctor/prescription" element = {<PrescriptionGenerator/>}/>
-
+          <Route
+            path="/doctor/prescription"
+            element={<PrescriptionGenerator />}
+          />
+          <Route path="/hospital/:id" element={<Hospital />} />
+          <Route path="/test3" element={<BookAppointmentForm />} />
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/patient/:id" element={<Patient />} />
+          {/* <Route path="/*" element={<h1>404 Not Found</h1>} /> */}
         </Routes>
       </BrowserRouter>
     </div>

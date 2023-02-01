@@ -28,7 +28,7 @@ const checkSignUp = async (req, res, next) => {
         return res.status(401).json({error:"Invalid Request"})
 
         // throw new Error("Invalid Request");
-        console.log("This is error message : " + error);
+        // console.log("This is error message : " + error);
 
     }
   
