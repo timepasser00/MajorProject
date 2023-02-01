@@ -30,8 +30,8 @@ const HospitalSchema = new mongoose.Schema({
   }], 
   walletAddress: {
     type: String,
-    required: true,
-    unique: [true, "Wallet Address already exists"], 
+    // required: true,
+    // unique: [true, "Wallet Address already exists"], 
   },
   contact: {
     type: String,
