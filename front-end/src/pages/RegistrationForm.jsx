@@ -9,8 +9,10 @@ import {Link} from 'react-router-dom';
 const RegistrationForm = (props) => {
   const [walletAddress,setWalletAddress] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [id, setId] = useState("");
   const tempwallet=useSelector((state)=>state.walletAddress)
 const dispatch = useDispatch();
+
   const formStyles = {
     width: '400px',
     height: '400px',
@@ -73,33 +75,83 @@ console.log("Im in registration form")
     
     if(selectedOption === "patient"){
       navigate('/patientDetails');
-    }else{
-      navigate('/requestForm');
+    }else if(selectedOption === "insuranceCompany"){
+      navigate('/insuranceCompanyDetailsForm');
+    }
+    else{
+      navigate('/requestForm',{state: { data : selectedOption}});
     }
     
   }
   const handleRequest = async(func) => {
-    console.log(walletAddress);
-    console.log(selectedOption);
-    const data = {walletAddress,selectedOption};
-    const url = 'http://localhost:3001/home/'+func;
-    console.log(url);
-    const response = await fetch(url, {
+    // console.log(walletAddress);
+    // console.log(selectedOption);
+    // const data = {walletAddress,selectedOption};
+    // const url = 'http://localhost:3001/home/'+func;
+    // console.log(url);
+    // const response = await fetch(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {  
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // if(func === "signUp"){
+    //   const msg = await response.text();
+    //   console.log(msg);
+    //   alert(msg); 
+    // }else{
+    //   const msg = await response.text();
+    //   console.log(msg);
+    //   alert(msg); 
+    // }
+    // const data={walletAddress,selectedOption};
+    // const response = await fetch('http://localhost:3001/home/login', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // const msg =  (await response.text()).toString();
+    // navigate(`/patient/${msg}`);
+    // console.log(msg);
+    // alert(msg);
+    try{
+    fetch('http://localhost:3001/home/logIn', {
       method: 'POST',
-      body: JSON.stringify(data),
-      headers: {  
+      body: JSON.stringify({walletAddress,selectedOption}),
+      headers: {
         'Content-Type': 'application/json'
       }
     })
-    if(func === "signUp"){
-      const msg = await response.text();
-      console.log(msg);
-      alert(msg); 
-    }else{
-      const msg = await response.text();
-      console.log(msg);
-      alert(msg); 
-    }
+    .then( res => {
+      if(res.status === 200){
+        return res.json();
+      }
+      else{
+        throw new Error("No such user exists");
+      }
+     } )
+    .then(data => {
+    setId(data);
+      console.log(data,"id from registration form");
+    
+        navigate(`/${data.category}/${data.id}`);
+      
+    }).catch(err => {
+      alert("No such user exists2");
+    })
+
+    }catch(err){
+
+        alert("No such user exists3");
+      }
+
+     
+      
+
+
          
   };
 
@@ -115,13 +167,14 @@ console.log("Im in registration form")
           navigateToDetails()}}>SignUp</button>
         <h3>Log In Options:</h3>
         {/* <h3>{walletAddress}</h3> */}
-        <Options style = {radioStyles2} option ={selectedOption} handleOptionChange ={setSelectedOption}/>
+        <Options style = {radioStyles2} option ={selectedOption} handleOptionChange ={setSelectedOption} type="login"/>
         <button type="submit" onClick={(e)=>{
           e.preventDefault()
           handleRequest("logIn")}}>Log In </button>
-      </form>
+      </form>   
       <Link to="/requestForm">Join</Link>
       </div>
+      {/* <h1>{id}</h1> */}
     </>
   );
 };

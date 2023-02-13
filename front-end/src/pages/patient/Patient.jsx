@@ -5,6 +5,7 @@ import './patient.css';
 const Patient = () => {
     const [selectedTab , setSelectedTab] = useState("list");
     const [doctorList, setDoctorList] = useState([]);
+    const [availableDocList, setAvailableDocList] = useState([]);
     const [labsList, setLabsList] = useState([]);
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
@@ -27,24 +28,26 @@ const Patient = () => {
         .catch((err) => {
             console.log(err);
         })
-        fetch(`http://localhost:3001/patient/getPendingDoctors/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        .then((res) => res.json())
-        .then((data) => {
-           setLabsList(data);
-            console.log(data);
-        }
-        )
-        .catch((err) => {
-            console.log(err);
-        }
-        )
+        // fetch(`http://localhost:3001/patient/getPendingDoctors/${id}`, {
+        //     method: "GET",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        // })
+        // .then((res) => res.json())
+        // .then((data) => {
+        //    setLabsList(data);
+        //     console.log(data);
+        // }
+        // )
+        // .catch((err) => {
+        //     console.log(err);
+        // }
+        // )
+
+        
     
-    }, [])
+    }, [id])
   return (
     <div className='patient-page-container'>
         <div className='patient-tabs'>

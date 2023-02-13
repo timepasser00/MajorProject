@@ -33,7 +33,8 @@ contract ehr is enroll {
    {
        address _Address = Address[_id];
        require(isDoctor[_Address] || isLabTech[_Address] || isInsuranceCompany[_Address],"not a valid participant");
-       
+        require((_code == 0 && patientRecord[msg.sender].isApprovedParticipants[_id]) ||
+        (_code != 0 && !patientRecord[msg.sender].isApprovedParticipants[_id]),"invalid request");
        if(_code == 0){
            patientRecord[msg.sender].isApprovedParticipants[_id] = false;
        }else{

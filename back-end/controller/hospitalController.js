@@ -4,6 +4,7 @@ const Doctor=require('../models/doctor');
 const Address=require('../models/address');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr(process.env.CRYPTR_SECRET);
+const EmployeeRequest = require('../models/employeeRequest')
 
 const registerRequest = async (req, res) => {
 
@@ -14,6 +15,7 @@ const registerRequest = async (req, res) => {
 
 
     try{
+        // console.log(encryptedWalletAddress,"address to approve after encrypt" );
         
         const request= await Request.create({type,name,contact,
             address:address,
@@ -30,10 +32,10 @@ const allRequests = async (req, res) => {
         const requests= await Request.find();
         res.send(requests)
     } catch (err) {
-        res.status(400).json({ err: err.message });
+        res.status(400).json({ err: err.message }); 
     }
 }
-const getAllHospitals = async (req, res) => {
+const getAllHospitals = async (req, res) => { 
     try {
         const hospitals = await Hospital.find();
         res.send(hospitals)
@@ -42,23 +44,52 @@ const getAllHospitals = async (req, res) => {
     }
 }
 const registerDoctor = async (req, res) => {
-    const  {firstName,lastName,yearOfExperience,qualification}=req.body;
-     console.log(firstName,lastName,yearOfExperience,qualification);
-        const hospitalId=req.params.id;
- 
+    const id=req.params.id;
+    console.log(id,"id"); 
+    // const  {firstName,lastName,yearOfExperience,qualification}=req.body;
+    //  console.log(firstName,lastName,yearOfExperience,qualification,walletAddress);
+    //     const hospitalId=req.params.id;
+ let docId="";
      try{
-         const hospital=await Hospital.findById(hospitalId);
-         console.log(hospital);
+        const request=await  EmployeeRequest.findById(id);
+        const {empWalletAddress}=req.body
+        console.log(empWalletAddress,"hospital address");
+        const {firstName,lastName,yearOfExperience,qualification,hospitalId,walletAddress}=request;
+        console.log(walletAddress,"address to approve after encrypt")
+        const decryptedWalletAddress = cryptr.decrypt(walletAddress);
+        const hospital=await Hospital.findById(hospitalId);
+        console.log(decryptedWalletAddress,"address to approve after decrypt" );
+
+     
+        const doctor=await Doctor.create({firstName,lastName,yearOfExperience,qualification,hospital:hospitalId});
          
-         const doctor=await Doctor.create({firstName,lastName,yearOfExperience,qualification,hospital:hospitalId});
-         console.log(doctor,"doctor");
+          docId=doctor._id;
+       const empId=(doctor._id).toString();
+         console.log(empId,"empId"); 
+       const instance = await require("../exports/instanceExport").getInstance();
+       await instance.addEmplyoee(decryptedWalletAddress,empId,{from:empWalletAddress});
+
          hospital.doctors.push(doctor._id);
             hospital.save();
          res.status(200).json({doctor});
+ 
      }catch(err){
+        if(docId!==""){
+        const doctor= await Doctor.findByIdAndDelete(docId);
+        }
+
          res.status(400).json({err:err.message});
      }
  }
+ const deleteRequest = async (req, res) => {
+    const id=req.params.id;
+    try{
+        const request=await EmployeeRequest.findByIdAndDelete(id);
+        res.status(200).json({request});
+    }catch(err){
+        res.status(400).json({err:err.message});
+    }
+}
  const removeDoctor = async (req, res) => {
    const doctorId=req.params.id;
     try{
@@ -84,6 +115,18 @@ const getAllDoctors = async (req, res) => {
     }
 
 }
+const getDoctorRequests=async(req,res)=>{
+    const hospitalId=req.params.id;
+    try{
+        const employeeRequest= await EmployeeRequest.find({hospitalId:hospitalId});
+        res.status(200).json({employeeRequest});
+    }catch(err){
+        res.status(400).json({err:err.message});
+    }
+}
+
+
+
 
 
 
@@ -95,5 +138,7 @@ module.exports={
     getAllHospitals,
     registerDoctor,
     removeDoctor,
-    getAllDoctors
+    getAllDoctors,
+    getDoctorRequests,
+    deleteRequest
 }

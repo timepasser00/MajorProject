@@ -16,6 +16,9 @@ const patientSchema = new Schema(
       type: Number,
       required: true,
     },
+    gender:{
+      type:String,
+    },
     walletAddress: {
       type: String,
       // required: true,
@@ -32,12 +35,18 @@ const patientSchema = new Schema(
         ref: "Doctor",
       },
     ],
-    approvedLabs: [
+    approvedLabTechs: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Lab",
       },
     ],
+    approvedInsuranceCompanies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "InsuranceCompany",
+      },
+    ], 
   },
   { timestamps: true }
 );

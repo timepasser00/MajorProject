@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './prescription.css'
 import qr_code from '../../Assets/images/qr_sample.jpg'
-const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
+const Body = ({ patient, doctor, referral, symptoms, tests, medications,view }) => {
   // Initialize the current page and set of items to display
   // console.log(symptoms)
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,6 +13,9 @@ const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+useEffect(() => {
+  console.log(view, "view")
+}, [])
 
   return (
     <div className="medical-record">
@@ -24,7 +27,7 @@ const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
         <p>Gender: {patient.gender}</p>
         <div className="doctor-info">
         <p><strong>Doctor:</strong> {doctor.name}</p>
-        { referral && <p><strong>Referred by:</strong> {referral.name}</p> }
+        {/* { referral && <p><strong>Referred by:</strong> {referral.name}</p> } */}
       </div>
         </div>
         <img src={qr_code} alt="qr_code" className="qr-code" />
@@ -47,6 +50,8 @@ const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
       </div>
 
       {/* Lab tests */}
+      {view && 
+      <>
       <div className="tests">
         <h4>Lab Tests:</h4>
         <table>
@@ -61,7 +66,28 @@ const Body = ({ patient, doctor, referral, symptoms, tests, medications }) => {
             </tr>
           ))}
         </table>
-      </div>
+        </div>
+        </>
+      }
+      {!view && 
+      <>
+      <div className="tests">
+        <h4>Lab Tests:</h4>
+        <table>
+          <tr>
+            <th>Test</th>
+            </tr>
+          {tests.length>1 &&    tests.slice(startIndex, endIndex).map((test, index) => (
+            <tr key={index}>
+              <td>{test.label}</td>
+              </tr>
+          ))}
+        </table>
+        </div>
+      </>
+      }
+        
+    
 
       {/* Medications */}
       <div className="medications-list">

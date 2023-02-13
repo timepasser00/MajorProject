@@ -42,7 +42,14 @@ const DoctorSchema = new mongoose.Schema({
         ref: 'Patient', 
       },
     },
-  ], 
+  ],
+  approvedBy: [
+ {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Patient',
+  },
+],
+ 
 });
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);

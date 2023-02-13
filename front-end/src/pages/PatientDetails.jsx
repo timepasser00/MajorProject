@@ -86,7 +86,7 @@ const PatientDetails = () => {
     <div>
       {flag && (
         <>
-          <PatientDetailsForm />
+          <PatientDetailsForm  walletAddress={walletAddress}/>
         </>
       )}
 

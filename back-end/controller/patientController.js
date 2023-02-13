@@ -3,28 +3,68 @@ const mongoose = require("mongoose");
 const Hospital = require("../models/hospital");
 const Doctor = require("../models/doctor");
 const Lab = require("../models/lab");
+const  contract = require('@truffle/contract');
+require('dotenv').config()
+const { response } = require('express');
+const  Web3 = require('web3');
+const contract_data = require("../../build/contracts/base.json");
+const patient = require("../models/patient");
+
+const localhost = process.env.localhost;
+const web3 = new Web3(localhost);
+const provider = new Web3.providers.HttpProvider(localhost);
+
+const contract_address = process.env.contract_address
+const base = contract(contract_data);
+base.setProvider(provider);
+const owner = process.env.OWNER;
+const LabTech = require("../models/labTech");
+const InsuranceCompany = require("../models/insuranceCompany"); 
+
 
 const registerDetails = async (req, res) => {
   const { firstName, lastName, email, walletAddress, age } = req.body;
+  let pId=0;
   console.log(firstName, lastName, email, walletAddress, age);
   try {
     const patient = await Patient.create({
       firstName,
       lastName,
       age,
-      walletAddress,
       email,
     });
-    res.status(200).json({ patient });
+    console.log(patient);
+    pId=patient._id;
+    const _id = (patient._id).toString();
+    console.log(_id, "id");
+  
+    const category=0;
+    const _clientAddress = walletAddress;
+    const instance = await base.at(contract_address);
+    await instance.addClient(_clientAddress,category,_id,{from:owner});
+
+    // const category = "patient";
+   
+
+    res.status(200).json({ patient }); 
   } catch (err) {
+    if(pId!=0){
+      console.log("hi ams here") 
+      const patient= await Patient.findByIdAndDelete(pId);
+      console.log(err.message);
+      console.log(patient)
+    }
+   
     res.status(400).json({ err: err.message });
   }
 };
 const getDetails = async (req, res) => {
-  const { walletAddress } = req.body;
-  console.log("walletAddress", walletAddress);
+  const { id } = req.params;
+  
+  console.log("id", id);
   try {
-    const patient = await Patient.find({ walletAddress: walletAddress });
+    const patient = await Patient.findById(id).select('-approvedDoctors  -approvedLabTechs -approvedInsuranceCompanies');
+
     console.log(patient);
     res.status(200).json({ patient });
   } catch (err) {
@@ -208,24 +248,85 @@ const bookAppointment = async (req, res) => {
 };
 
 const approveDoctor = async (req, res) => {
-  const { doctorId,patientId } = req.body
+  // const { doctorId,patientId } = req.body
+  const { doctorId, patientWalletAddress } = req.body;
+  let pId="";
+
+ 
 
   try {
+    console.log("doctorId", doctorId, "patientWalletAddress", patientWalletAddress);
     const doctor = await Doctor.findById(doctorId);
+  
     if (!doctor) {
-      res.status(400).json({ err: "Doctor not found" });
+      res.status(400).json({ err: "Doctor not found" }); 
     }
+    const instance = await require("../exports/instanceExport").getInstance(); 
+    await instance.handleEhrPermission(doctorId,1,{from:patientWalletAddress});
+    const patientId=await instance.getId(patientWalletAddress,{from:patientWalletAddress});
     const patient= await Patient.findById(patientId);
     if (!patient) {
       res.status(400).json({ err: "Patient not found" });
     }
+    
+
+   
+    pId=patientId;
     patient.approvedDoctors.push(doctorId);
     await patient.save();
-    res.status(200).json({ msg: "Doctor approved" });
+    doctor.approvedBy.push(patientId);
+    await doctor.save();
+    res.status(200).json({ doctor});
   } catch (err) {
+    if(pId!==""){
+    const patient=await Patient.findById(pId);
+
+    patient.approvedDoctors.pop(doctorId);
+    await patient.save();
+    const doctor=await Doctor.findById(doctorId);
+    doctor.approvedBy.pop(patientId);
+    await doctor.save();
+    }
     res.status(400).json({ err: err.message });
   }
 };
+const approveLabTech = async (req, res) => {
+  const { labTechId, patientWalletAddress } = req.body;
+  let pId="";
+  try {
+    console.log("labTechId", labTechId, "patientWalletAddress", patientWalletAddress);
+    const labTech = await LabTech.findById(labTechId);
+    if (!labTech) {
+      res.status(400).json({ err: "LabTech not found" });
+    }
+    const instance = await require("../exports/instanceExport").getInstance();
+    await instance.handleEhrPermission(labTechId,2,{from:patientWalletAddress});
+    const patientId=await instance.getId(patientWalletAddress,{from:patientWalletAddress});
+    const patient=await Patient.findById(patientId);
+    if (!patient) {
+      res.status(400).json({ err: "Patient not found" });
+    }
+    pId=patientId;
+    patient.approvedLabTechs.push(labTechId);
+    labTech.approvedBy.push(patientId);
+    await labTech.save();
+    await patient.save();
+    res.status(200).json({ labTech });
+  } catch (err) {
+    if(pId!==""){
+      
+      const patient=await Patient.findById(pId);
+      patient.approvedLabTechs.pop(labTechId);
+      await patient.save();
+      const labTech=await LabTech.findById(labTechId);
+      labTech.approvedBy.pop(pId);
+      await labTech.save();
+      }
+    res.status(400).json({ err: err.message });
+  }
+};
+
+
 
 
 const getApprovedDoctors = async (req, res) => {
@@ -291,6 +392,45 @@ const getApprovedLabs = async (req, res) => {
   }
 };
 
+const approveInsuranceCompany = async (req, res) => {
+  //this funtion is called when user approves insurance company to see ehr record while claiming ehr
+  const { insuranceCompanyId,walletAddress } = req.body;
+  let pId="";
+  console.log("insuranceCompanyId", insuranceCompanyId, "walletAddress", walletAddress);
+  try {
+    const insuranceCompany=await InsuranceCompany.findById(insuranceCompanyId);
+    if(!insuranceCompany){
+      res.status(400).json({err:"Insurance Company not found"});
+    }
+    const instance = await require("../exports/instanceExport").getInstance();
+    await instance.handleEhrPermission(insuranceCompanyId,3,{from:walletAddress});
+    const patientId=await instance.getId(walletAddress,{from:walletAddress});
+    const patient=await Patient.findById(patientId);
+    if(!patient){
+      res.status(400).json({err:"Patient not found"});
+    }
+    pId=patientId;
+    patient.approvedInsuranceCompanies.push(insuranceCompanyId);
+    await patient.save();
+    console.log("insuranceCompany",insuranceCompany);
+    console.log(patientId,"patientId")
+    insuranceCompany.approvedBy.push(patientId);
+    await insuranceCompany.save();
+    res.status(200).json({insuranceCompany});
+  } catch (err) {
+    if(pId!=="" ){
+      const patient=await Patient.findById(pId);
+      patient.approvedInsuranceCompanies.pop(insuranceCompanyId);
+      await patient.save();
+
+    }
+    console.log("err",err);
+    res.status(400).json({ err: err.message });
+  }
+};
+
+
+
 
 module.exports = {
   registerDetails,
@@ -303,5 +443,8 @@ module.exports = {
   getApprovedDoctors,
   approveDoctor,
   getApprovedLabs,
-  approveLabs
+  approveLabs,
+  approveLabTech,
+  approveInsuranceCompany,
 };
+  

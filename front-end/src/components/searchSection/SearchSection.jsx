@@ -13,16 +13,33 @@ const[error, setError] = useState('');
 const [query, setQuery] = useState('');
 const Navigate = useNavigate();
   const handleSubmit = (event) => {
-
+console.log(searchType,"searchType")
     event.preventDefault();
     // console.log(searchType,searchTerm)
+    if(searchType==="lab"){
+      Navigate({
+        pathname: '/labs',
+        search:createSearchParams({
+          keyword:query
+        }).toString()
+      })
+    }
+    else if(searchType==="insuranceCompany"){
+      Navigate({
+        pathname: '/insuranceCompanies',
+        search:createSearchParams({
+          keyword:query
+        }).toString()
+      })
+    }
+    else {
     Navigate({
       pathname: '/hospitals',
       search:createSearchParams({
         keyword:query
       }).toString()
     })
-
+  }
 
 
     // Validate form values
@@ -60,12 +77,15 @@ const Navigate = useNavigate();
             <option value="doctor">Doctor</option>
             <option value="hospital">Hospital</option>
             <option value="city">City</option>
+            <option value="lab">Lab</option>
+            <option value="insuranceCompany">Insurance Company</option>
           </select>
         </label>
         <label htmlFor="search-term">
           Search Term:
           <input type="text" id="query" name="query"  onChange={(e)=> setQuery(e.target.value)} />
         </label>
+        <h3>{searchType}</h3>
         <button type="submit">Search</button>
       </form>
     </div>

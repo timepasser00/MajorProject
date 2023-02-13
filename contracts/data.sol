@@ -32,6 +32,18 @@ contract data {
     }
 
     mapping(address => medicalRecord)public patientRecord;
+
+    function getId(address _address)public view returns(string memory){
+        return Id[_address];
+    }
+
+    function getAddress(string memory _id)public view returns(address){
+        return Address[_id];
+    }
+
+    function getPrescriptionCnt(address _address)public view returns(uint256){
+        return patientRecord[_address].prescriptionCnt;
+    }
     
 
 

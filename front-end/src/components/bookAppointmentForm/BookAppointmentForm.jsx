@@ -106,7 +106,7 @@ const BookAppointmentForm = (props) => {
           
         </div>
       ))}
-      <h3>{selectedSlot.date}</h3>
+      {/* <h3>{selectedSlot.date}</h3> */}
       <div className='slot-pagination'>
         {currentPage > 0 && <button onClick={handlePrevPage}>Previous</button>}
         {currentPage < totalPages - 1 && <button onClick={handleNextPage}>Next</button>}
