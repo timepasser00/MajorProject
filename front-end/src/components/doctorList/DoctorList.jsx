@@ -2,9 +2,17 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import BookAppointmentForm from "../bookAppointmentForm/BookAppointmentForm";
-import './doctorList.css'
+
+// import StarRatings from './react-star-ratings';
+import ReactStars from "react-rating-stars-component";
+
+
+import "./doctorList.css";
+import { useSelector } from "react-redux";
 
 const DoctorList = (props) => {
+  const userType= useSelector(state => state.category);
+  const walletAddress = useSelector((state) => state.walletAddress);
   const [doctor, setDoctor] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,8 +21,9 @@ const DoctorList = (props) => {
   const [hospitalId, setHospitalId] = useState("");
   const [modal, setModal] = useState(false);
   const [doctorId, setDoctorId] = useState("");
-  
-  
+  const [doctorRating, setDoctorRating] = useState(1);
+ 
+
   useEffect(() => {
     fetch(`http://localhost:3001/hospital/getAllDoctors/${props.id}`, {
       method: "GET",
@@ -30,23 +39,136 @@ const DoctorList = (props) => {
         // console.log(arrData, "arrdata");
         // // console.log(data, "data");
         // console.log(arrData, "hospitalId");
-        const doctor = data.doctors;
+        let doctor = data.doctors;
         setDoctor(doctor);
+       const newDoctorList=[];
+
+
+       
+const promises = doctor.map(d => isDoctorApproved(d._id))
+Promise.all(promises).then(approvalList => {
+  const newDoctorList = doctor.map((d, i) => ({...d, isApproved: approvalList[i]}))
+  // update state with newDoctorList
+  console.log(newDoctorList,"new doctor list")
+  setDoctor(newDoctorList)
+})
+      //  setDoctor(newDoctorList);
+      //  console.log(newDoctorList,"new doc list")
+        
+
         console.log(doctor, "doctor");
       });
+      console.log(walletAddress, "walletAddress");
   }, []);
-const handleDoctorSearch = (searchTerm) => {
+  const handleDoctorSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
     const filteredDoctors = doctor.filter((doctor) => {
-      return doctor.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || doctor.lastName.toLowerCase().includes(searchTerm.toLowerCase()) || doctor.qualification.toLowerCase().includes(searchTerm.toLowerCase());
+      return (
+        doctor.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.qualification.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     });
     setFilteredDoctors(filteredDoctors);
-  }
+
+  };
   const handleClick = (id) => {
     setModal(!modal);
     setDoctorId(id);
   };
+  
 
+  const handleDoctorApproval = (id) => {
+    fetch(`http://localhost:3001/patient/approveDoctor`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        patientWalletAddress: walletAddress,
+        doctorId: id,
+      }),
+    })
+
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "data");
+      }
+      ).catch((err) => {
+        console.log(err, "error");
+      }
+      );
+        
+
+    
+  };
+  const ratingChanged = (newRating) => {
+    console.log(newRating);
+    setDoctorRating(newRating);
+
+    
+
+  };
+  const getRating = (id) => {
+    fetch(`http://localhost:3001/patient/getDoctorRatings/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "data");
+      }
+      ).catch((err) => {
+        console.log(err, "error");
+      }
+      );
+  }
+  const isDoctorApproved =async (id) => {
+  
+  try {
+    const res = await fetch(`http://localhost:3001/patient/isDoctorApproved/${id}/${walletAddress}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log(data, "data");
+    return data.isApproved;
+  } catch (err) {
+    console.log(err, "error");
+    return false;
+  }
+     
+  }
+
+
+
+
+  const handleRating = (id) => {
+    fetch(`http://localhost:3001/patient/doctorRatings`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        patientWalletAddress: walletAddress,
+        doctorId: id,
+        star: doctorRating,
+      }),
+    })
+
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "data");
+      }
+      ).catch((err) => {
+        console.log(err, "error");
+      }
+      );
+    }
 
   return (
     <div>
@@ -59,58 +181,67 @@ const handleDoctorSearch = (searchTerm) => {
       </div>
 
       <div className="doctor-list">
-      <table>
-        <thead>
-                <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Qualification</th>
-                  <th>Experience</th>
-                  <th>Book Appointement</th>
-                 
-                  
-                  </tr>
-                  </thead>
-                 <tbody>
-        {filteredDoctors &&
-          filteredDoctors.map((doctor) => (
-           
-
-           
+        <table>
+          <thead>
             <tr>
-              <td>{doctor.firstName}</td>
-              <td>{doctor.lastName}</td>
-              <td>{doctor.qualification}</td>
-              
-              <td>{doctor.yearOfExperience}</td>
-              {/* <td><button onClick={() => setModal(!modal), setDoctorId(doctor.id)} >Book Appointment</button></td> */}
-             <td> <button onClick={() => handleClick(doctor._id)}>
-  Book appointment
-</button></td>
-              {/* <td>{doctor.specialization}</td> */}
-             
-
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Qualification</th>
+              <th>Experience</th>
+              <th>Book Appointement</th>
+              <th>Approve Doctor </th>
+              <th>Doctor Ratings</th>
+              <th>Rate your Doctor</th>
             </tr>
-          
-             
+          </thead>
+          <tbody>
+            {filteredDoctors &&
+              filteredDoctors.map((doctor) => (
+                <tr>
+                  <td>{doctor.firstName}</td>
+                  <td>{doctor.lastName}</td>
+                  <td>{doctor.qualification}</td>
 
-             
-             
-           
-          ))}
-            </tbody> 
-           </table>
-
+                  <td>{doctor.yearOfExperience}</td>
+                  {/* <td><button onClick={() => setModal(!modal), setDoctorId(doctor.id)} >Book Appointment</button></td> */}
+                  <td>
+                    {" "}
+                    <button onClick={() => handleClick(doctor._id)}>
+                      Book appointment
+                    </button>
+                  </td>
+                    <td> <button onClick={() => handleDoctorApproval(doctor._id)}> approve  </button></td>
+                    <td  >    <ReactStars
+    count={5}
+    value={doctor.avgRating}
+    edit={false}
+    // onChange={ratingChanged}
+    size={24}
+    activeColor="#ffd700"
+  />    ,</td>
+  { doctor.isApproved && <td>    <ReactStars
+    count={5}
+    value={doctorRating}
+    edit={true}
+    onChange={ratingChanged}
+    size={24}
+    activeColor="#ffd700"
+  /><button onClick={() =>handleRating(doctor._id)}>submit</button>,</td>}
+                  {/* <td>{doctor.specialization}</td> */}
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
-      {
-        modal && <div className="modal-container-appointment">
+      {modal && (
+        <div className="modal-container-appointment">
           <div className="modal-appointment">
-            <BookAppointmentForm doctorId={doctorId}/>
-            
+            <BookAppointmentForm doctorId={doctorId} />
+
             <button onClick={() => setModal(!modal)}>Close</button>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };

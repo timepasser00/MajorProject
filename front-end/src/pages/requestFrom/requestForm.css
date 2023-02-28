@@ -1,11 +1,12 @@
-.request-form-container {
+/* .request-form-container{
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
   }
   
-  .request-form-container form {
+  .request-form-container-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +20,7 @@
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
-    /* border: none; */
+   
   }
   
   .request-form-container  input[type='submit'] {
@@ -32,3 +33,59 @@
     cursor: pointer;
   }
   
+
+.request-form-container{
+
+
+} */
+
+.request-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.request-form-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.request-form-form>div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.request-form-form > div > input {
+  margin-top: 10px;
+  width: 180px;
+  height: 25px;
+  /* justify-content: center; */
+}
+.request-form-form > input[type='submit']{
+  margin-top: 10px;
+  width: 60px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #1e90ff;
+  color: white;
+  /* font-size: 10px; */
+
+  border: none;
+  cursor: pointer;
+}
+.request-form-form > div > select {
+  margin-top: 10px;
+  width: 180px;
+  height: 25px;
+  /* justify-content: center; */
+}

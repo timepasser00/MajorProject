@@ -5,14 +5,24 @@ import { useState, useEffect } from "react";
 import makeAnimated from "react-select/animated";
 import ReactSelect from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { useLocation } from "react-router-dom";
 
 import {
   symptomOptions,
   medicationsOptions,
+  labTestOptions,
+  
 } from "../../Assets/constants/options";
 const animatedComponents = makeAnimated();
 
 const PrescriptionGenerator = () => {
+  const location = useLocation();
+  const patientId=location.state.pId;
+  const docWalletAddress=location.state.docWalletAddress;
+
+ 
+
+
   const customStyles = {
     control: (base, state) => ({
       ...base,
@@ -40,6 +50,7 @@ const PrescriptionGenerator = () => {
   const [medications, setMedications] = useState([]);
 
   const [selectedMedications, setSelectedMedications] = useState([]);
+  const [labTests, setLabTests] = useState([]);
 
   //   useEffect(() => {
   //     console.log("Selected symptoms are: ", symptoms);
@@ -48,12 +59,96 @@ const PrescriptionGenerator = () => {
   //     console.log("Final medications are: ", medications);
   //   }, [symptoms, selectedMedications, medications]);
 
+  useEffect(() => {
+    console.log("Patient ID is: ", patientId);
+    console.log("Doctor wallet address is: ", docWalletAddress);
+fetch(`http://localhost:3001/patient/getDetails/${patientId}`, {
+    
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      } else {
+        alert(" error here");
+      }
+    }
+    )
+    .then((data) => {
+      setPatient({ ...patient, name: `${data.patient.firstName} ${data.patient.lastName}`,age:`${data.patient.age}` });
+      console.log(data, "data");
+    }
+    );
+
+    fetch(`http://localhost:3001/doctor/getDocDetails/${docWalletAddress}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(" error here");
+        }
+      }
+      )
+      .then((data) => {
+        setDoctor({ ...doctor, name: `${data.doctor.firstName} ${data.doctor.lastName}`, qualification: `${data.doctor.qualification}` });
+        console.log(data, "data");
+      }
+      );
+
+
+
+  }, [patientId, docWalletAddress]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:3001/doctor/uploadPrescription", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patientId: patientId,
+          walletAddress: docWalletAddress,
+          medicalInfo:{
+            symptoms: symptoms,
+            medications: medications,
+            doctor: doctor,
+            patient: patient,
+
+          },
+          labTestInfo: labTests,
+        }),
+      })
+
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(" error here");
+        }
+      }
+      )
+      .then((data) => {
+        console.log(data, "data");
+      }
+      );
+  }
+
   return (
     <>
       <div className="prescription-gen-container">
         <span className="pres-left">
-          <form>
-            <div>
+          <form onSubmit={handleSubmit}>
+            {/* <div>
               <label htmlFor="patient-name">Patient Name: </label>
               <input
                 id="patient-name"
@@ -63,10 +158,10 @@ const PrescriptionGenerator = () => {
                   setPatient({ ...patient, name: e.target.value });
                 }}
               />
-            </div>
+            </div> */}
 
             <div>
-              <label htmlFor="patient-age">Patient's Age: </label>
+              {/* <label htmlFor="patient-age">Patient's Age: </label>
               <input
                 id="patient-age"
                 type="number"
@@ -74,7 +169,7 @@ const PrescriptionGenerator = () => {
                 onChange={(e) => {
                   setPatient({ ...patient, age: e.target.value });
                 }}
-              />
+              /> */}
             </div>
 
             <div>
@@ -192,6 +287,24 @@ const PrescriptionGenerator = () => {
                   </div>
                 </>
               ))}
+            <div>
+              <label htmlFor="symptom">labTests: </label>
+              <CreatableSelect
+                components={animatedComponents}
+                isMulti
+                defaultValue={labTests}
+                onChange={setLabTests}
+                options={labTestOptions}
+                isClearable={true}
+                isSearchable={true}
+                isDisabled={false}
+                isLoading={false}
+                isRtl={false}
+                closeMenuOnSelect={false}
+                styles={customStyles}
+              />
+            </div>
+            <button type="submit">Submit</button>
           </form>
         </span>
         <span className="pres-right">
@@ -201,6 +314,9 @@ const PrescriptionGenerator = () => {
               (key) => medications[key]
             )}
             medicationName={selectedMedications} symptoms={symptoms}
+            doctor={doctor}
+            tests={labTests}
+            view={false}
           />
         </span>
       </div>

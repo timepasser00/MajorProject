@@ -1,0 +1,12 @@
+.labTechList-container th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd ;
+    /* border: 1px solid black; */
+
+}
+/* .labTechList-container tr, td {
+    padding: 10px;
+    text-align: left;
+    
+} */

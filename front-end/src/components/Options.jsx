@@ -2,10 +2,11 @@ import React , {useState} from 'react'
 
 const Options = (props) => {
     // const [selectedOption, setSelectedOption] = useState("")
+
     
 
   return (
-    <div>
+    <div >
         <label style={props.style}>
         <input type="radio" name="registration" value="patient" 
         onChange={(e)=>
@@ -24,7 +25,28 @@ const Options = (props) => {
         props.handleOptionChange(e.target.value)}/> Lab
         </label>
         <br />
+        <label style={props.style}>
+        <input type="radio" name="registration" value="insuranceCompany"
+        onChange={(e)=>
+        props.handleOptionChange(e.target.value)}/> Insurance Company
+        </label>
         <br />
+        {props.type === "login" && <>
+        <label style={props.style}>
+        <input type="radio" name="registration" value="doctor"
+        onChange={(e)=>
+        props.handleOptionChange(e.target.value)}/> Doctor
+        </label> <br />
+        </>}
+        {props.type === "login" && <>
+        <label style={props.style}>
+        <input type="radio" name="registration" value="labTech"
+        onChange={(e)=>
+        props.handleOptionChange(e.target.value)}/> Lab Technician
+        </label> <br />
+        </>}
+       
+        <br/>
     </div>
   )
 }

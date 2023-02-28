@@ -1,0 +1,10 @@
+.employee-approve-table th  {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+    background-color: #ddd;
+}
+.employee-approve-table td{
+    border: 1px solid black;
+    padding: 8px;
+}

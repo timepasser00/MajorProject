@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
+import { useSelector } from 'react-redux';
 
 const EnrollDoctorForm = (props) => {
+  const walletAddress=useSelector((state) =>state.walletAddress)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [yearOfExperience, setYearOfExperience] = useState("");
@@ -14,13 +16,31 @@ const EnrollDoctorForm = (props) => {
         //     yearOfExperience,
         //     qualification
         // }
-       fetch(`http://localhost:3001/hospital/registerDoctor/${props.id}`, {
-              method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ firstName, lastName, yearOfExperience, qualification }),
-            })
+      //  fetch(`http://localhost:3001/hospital/registerDoctor/${props.id}`, {
+      //         method: "POST",
+      //           headers: {
+      //               "Content-Type": "application/json",
+      //           },
+      //           body: JSON.stringify({ firstName, lastName, yearOfExperience, qualification }),
+      //       })
+   fetch('http://localhost:3001/doctor/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ firstName, lastName, yearOfExperience, qualification, walletAddress, hospitalId: props.id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      }
+      )
+      .catch((error) => {
+        console.error('Error:', error);
+      }
+      );
+      
+
     }
 
 

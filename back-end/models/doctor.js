@@ -42,7 +42,27 @@ const DoctorSchema = new mongoose.Schema({
         ref: 'Patient', 
       },
     },
-  ], 
+  ],
+  approvedBy: [
+ {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Patient',
+  },
+],
+rating: 
+  [
+    // {
+    // patient: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Patient',
+    // },
+    // star: Number,
+    // }
+
+  ],
+  avgRating: Number,
+
+
 });
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);

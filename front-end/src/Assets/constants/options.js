@@ -56,3 +56,10 @@ export const medicationsOptions = [
     value: "anti-septic",
   },
 ];
+
+export  const labTestOptions = [
+  { label: "blood test", value: "blood test" },
+  { label: "sugar test", value: "sugar test"},
+  { label: "harmone level test", value: "harmone level test"},
+  { label: "cholestrol level test", value: "cholestrol level test"},
+]

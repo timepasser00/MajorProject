@@ -28,13 +28,14 @@ const handleApprove = (id) => {
     .then(res => res.json())
     .then(data => {
         console.log(data,"data") 
+        deleteRequest(id)
        
     })
  
 
 
     setRequests(newRequests)
-    deleteRequest(id)
+   
     console.log(requests,"requests after approval")
 }
 const handleRejection= (id) => {

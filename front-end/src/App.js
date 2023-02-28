@@ -16,6 +16,15 @@ import Hospital from "./pages/hospital/Hospital";
 import BookAppointmentForm from "./components/bookAppointmentForm/BookAppointmentForm";
 import Appointment from "./pages/appointment/Appointment";
 import Patient from "./pages/patient/Patient";
+import Lab from "./pages/lab/Lab";
+import LabList from "./pages/labList/LabList";
+import InsuranceCompanyDetailsForm from "./pages/insuranceCompanyDetailsForm/InsuranceCompanyDetailsForm";
+import InsuranceCompany from "./pages/insuranceCompany/InsuranceCompany";
+import InsuranceCompanyList from "./pages/insuranceCompanyList/InsuranceCompanyList";
+import Doctor from "./pages/doctor/Doctor";
+import LabTech from "./pages/labTech/LabTech";
+import LabReportGenerator from "./pages/labReportGenerator/LabReportGenerator";
+import LabReport from "./pages/labReport/LabReport";
 
 function App() {
   return (
@@ -54,15 +63,15 @@ function App() {
               </>
             }
           />
-          <Route
+          {/* <Route
             path="/home"
             element={
               <>
                 <Prescription />
-                {/* <Home/> */}
+                <Home/>
               </>
             }
-          />
+          /> */}
           <Route
             path="/admin"
             element={
@@ -90,6 +99,16 @@ function App() {
           <Route path="/test3" element={<BookAppointmentForm />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/patient/:id" element={<Patient />} />
+          <Route path="/lab/:id" element={<Lab/>} />
+          <Route path="/labs" element={<LabList/>} />
+          <Route path="/insuranceCompanyDetailsForm" element ={<InsuranceCompanyDetailsForm/>}/>
+          <Route path="/insuranceCompany/:id" element={<InsuranceCompany/>}/>
+          <Route path="/insuranceCompanies" element={<InsuranceCompanyList/>}/>
+          <Route path="/doctor/:id" element={<Doctor/>}/>
+          <Route path="/labTech/:id" element={<LabTech/>}/>
+          <Route path="/labTech/genrateReport" element={<LabReportGenerator/>}/>
+          <Route path="/labTech/report" element={<LabReport/>}/>
+
           {/* <Route path="/*" element={<h1>404 Not Found</h1>} /> */}
         </Routes>
       </BrowserRouter>

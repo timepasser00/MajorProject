@@ -5,6 +5,9 @@
 }
 .register-app {
   text-align: center;
+  width: auto;
+  height:100dvh;
+  background-color: #f5f5f5;
 }
 
 .form-container {
@@ -87,59 +90,7 @@ label {
 .pres-head-right {
   margin-right: 20px;
 }
-
-/* .pres-body-container {
-  width: 100vw;
-  height: 80vh;
-  border: 3px solid black;
-  display: flex;
-  flex-direction: column;
-}
-.pres-body-extra-det {
-  height: 25vh;
-  border: 3px solid black;
-  display: flex;
-  justify-content: space-between;
-}
-.pres-body-complaint {
-  height: 25vh;
-  border: 3px solid red;
-}
-.pres-body-medi {
-  height: 30vh;
-  border: 3px solid green;
+.register-app-form > h3{
+  translate: -5%;
 }
 
-.pres-qr-img {
-  height: 80%;
-}
-.pres-body-extra-det-sec-right h4{
-  margin: 10px 42px 0 0 ;
-}
-
-li{
-  display: inline-block;
-  /* margin: 5px; */
-  /* font-size: 0.9rem;
-}
-.pres-body-det-sec-left-det{
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  border: 3px solid pink; */
-  /* height: 100%; */
-/* }
-
-.pres-body-det-sec-left-det ul :nth-child(1){
- font-weight: bold;
- display: inline;
- position: relative;
- 
-
-} */
-
-/* .pres-refer{
-  display: flex;
-  align-self: start;
-
-} */ 

@@ -1,8 +1,8 @@
 import { ActionTypes } from "../constants/action-types";
 
-export const assignWalletAddress = (walletAddress) => {
+export const assignWalletAddress = (Info) => {
   return {
     type: ActionTypes.SET_WALLET_ADDRESS,
-    payload: walletAddress,
+    payload: Info,
   };
 }

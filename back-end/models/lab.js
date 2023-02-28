@@ -33,7 +33,12 @@ const LabSchemma=new mongoose.Schema({
     walletAddress:{
         type:String,
          // required: true,
-    }
+    },
+    labTechs:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'LabTech',
+    }],
+
 });
 
 const Lab=mongoose.model('Lab',LabSchemma);

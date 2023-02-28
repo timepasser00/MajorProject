@@ -3,6 +3,8 @@ import Body from "./Body";
 import Header from "./Header";
 
 const Prescription = (props) => {
+
+  console.log(props, "props");
   const data = {
     patient: {
       name: "John Doe",
@@ -143,12 +145,13 @@ const Prescription = (props) => {
     <div className="prscription-container">
       <Header />
       <Body
-        patient={props.patient}
-        doctor={data.doctor}
+        patient={props.patient}  //
+        doctor={props.doctor}  //
         referral={data.referral}
         symptoms={props.symptoms}
-        tests={data.tests}
+        tests={props.tests}
         medications={props.medications}
+        view={props.view}
         
       />
       

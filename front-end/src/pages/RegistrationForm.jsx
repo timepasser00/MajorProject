@@ -9,16 +9,18 @@ import {Link} from 'react-router-dom';
 const RegistrationForm = (props) => {
   const [walletAddress,setWalletAddress] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [id, setId] = useState("");
   const tempwallet=useSelector((state)=>state.walletAddress)
 const dispatch = useDispatch();
+
   const formStyles = {
-    width: '400px',
-    height: '400px',
+    width: '500px',
+    height: '450px',
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: '#eee',
+    backgroundColor: ' #fff',
     padding: '20px',
     border: '1px solid #333'
     
@@ -39,7 +41,12 @@ console.log("Im in registration form")
           setWalletAddress(curr_accounts[0])
           console.log("walletAddress :: " , walletAddress);
           // dispatch({type: "SET_WALLET_ADDRESS", payload: walletAddress});
-          dispatch(assignWalletAddress(walletAddress));
+          const Info = {
+            walletAddress: walletAddress,
+            category: ""
+          }
+          dispatch(assignWalletAddress(Info));
+          // dispatch(assignWalletAddress(walletAddress));
           console.log("tempwallet :: " , tempwallet);
         }catch(error){
           console.log("Error connecting ..");
@@ -55,15 +62,26 @@ console.log("Im in registration form")
   const radioStyles1 = {
     position: 'absolute',
     width: 'auto',
-    padding: '2px',
-    left : '40%'
+    padding: '5px',
+    left : '30%',
+    margin: '10px'
   };
   const radioStyles2 = {
     position: 'absolute',
     width: 'auto',
-    padding: '2px',
-    left : '40%'
+    padding: '5px',
+    left : '30%',
+    margin: '10px'
   };
+  const buttonStyles = {
+    width:" 60px",
+  height: "30px",
+  borderRadius: "2px",
+  backgroundColor: "#1e90ff",
+  color: "white",
+  border: "none",
+  margin: "10px",
+  }
 
   function handleOptionChange(x){
     setSelectedOption(x);
@@ -73,33 +91,89 @@ console.log("Im in registration form")
     
     if(selectedOption === "patient"){
       navigate('/patientDetails');
-    }else{
-      navigate('/requestForm');
+    }else if(selectedOption === "insuranceCompany"){
+      navigate('/insuranceCompanyDetailsForm');
+    }
+    else{
+      navigate('/requestForm',{state: { data : selectedOption}});
     }
     
   }
   const handleRequest = async(func) => {
-    console.log(walletAddress);
-    console.log(selectedOption);
-    const data = {walletAddress,selectedOption};
-    const url = 'http://localhost:3001/home/'+func;
-    console.log(url);
-    const response = await fetch(url, {
+    // console.log(walletAddress);
+    // console.log(selectedOption);
+    // const data = {walletAddress,selectedOption};
+    // const url = 'http://localhost:3001/home/'+func;
+    // console.log(url);
+    // const response = await fetch(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {  
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // if(func === "signUp"){
+    //   const msg = await response.text();
+    //   console.log(msg);
+    //   alert(msg); 
+    // }else{
+    //   const msg = await response.text();
+    //   console.log(msg);
+    //   alert(msg); 
+    // }
+    // const data={walletAddress,selectedOption};
+    // const response = await fetch('http://localhost:3001/home/login', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // const msg =  (await response.text()).toString();
+    // navigate(`/patient/${msg}`);
+    // console.log(msg);
+    // alert(msg);
+    try{
+    fetch('http://localhost:3001/home/logIn', {
       method: 'POST',
-      body: JSON.stringify(data),
-      headers: {  
+      body: JSON.stringify({walletAddress,selectedOption}),
+      headers: {
         'Content-Type': 'application/json'
       }
     })
-    if(func === "signUp"){
-      const msg = await response.text();
-      console.log(msg);
-      alert(msg); 
-    }else{
-      const msg = await response.text();
-      console.log(msg);
-      alert(msg); 
+    .then( res => {
+      if(res.status === 200){
+        return res.json();
+      }
+      else{
+        throw new Error("No such user exists");
+      }
+     } )
+    .then(data => {
+    setId(data);
+      console.log(data,"id from registration form");
+      const Info = {
+
+        walletAddress: walletAddress,
+        category: data.category
     }
+    dispatch(assignWalletAddress(Info));
+    
+        navigate(`/${data.category}/${data.id}`);
+      
+    }).catch(err => {
+      alert("No such user exists2");
+    })
+
+    }catch(err){
+
+        alert("No such user exists3");
+      }
+
+     
+      
+
+
          
   };
 
@@ -107,21 +181,22 @@ console.log("Im in registration form")
     <>
     <div className='register-app'>
       <h1>Health Block</h1>
-      <form style={formStyles}>
+      <form style={formStyles} className="register-app-form">
         <h3>Sign Up  Options:</h3>
         <Options style = {radioStyles1} handleOptionChange={handleOptionChange}  />
-        <button type="submit" onClick={(e)=> {
+        <button style={buttonStyles} type="submit" onClick={(e)=> {
           e.preventDefault()
           navigateToDetails()}}>SignUp</button>
         <h3>Log In Options:</h3>
         {/* <h3>{walletAddress}</h3> */}
-        <Options style = {radioStyles2} option ={selectedOption} handleOptionChange ={setSelectedOption}/>
-        <button type="submit" onClick={(e)=>{
+        <Options style = {radioStyles2} option ={selectedOption} handleOptionChange ={setSelectedOption} type="login"/>
+        <button style={buttonStyles} type="submit" onClick={(e)=>{
           e.preventDefault()
           handleRequest("logIn")}}>Log In </button>
-      </form>
-      <Link to="/requestForm">Join</Link>
+      </form>   
+      <Link to="/home">Home</Link>
       </div>
+      {/* <h1>{id}</h1> */}
     </>
   );
 };
