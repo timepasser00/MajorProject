@@ -2,10 +2,11 @@ import React , {useState} from 'react'
 
 const Options = (props) => {
     // const [selectedOption, setSelectedOption] = useState("")
+
     
 
   return (
-    <div>
+    <div >
         <label style={props.style}>
         <input type="radio" name="registration" value="patient" 
         onChange={(e)=>

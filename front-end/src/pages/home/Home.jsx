@@ -15,6 +15,8 @@ const Home = () => {
   const [id, setId] = useState("");
   const tempwallet=useSelector((state)=>state.walletAddress)
 const dispatch = useDispatch();
+const [userType, setUserType] = useState("");
+
 
 
   useEffect(()=>{
@@ -29,11 +31,19 @@ const dispatch = useDispatch();
           });
           
           await Promise.resolve(curr_accounts);
+          let twallet=await curr_accounts[0];
           setWalletAddress(curr_accounts[0])
           console.log("walletAddress :: " , walletAddress);
           // dispatch({type: "SET_WALLET_ADDRESS", payload: walletAddress});
-          dispatch(assignWalletAddress(walletAddress));
-          console.log("tempwallet :: " , tempwallet);
+          // dispatch(assignWalletAddress(walletAddress));
+          // const Info = {
+          //   walletAddress: walletAddress,
+          //  category: "Patient"
+          // }
+
+          // dispatch(assignWalletAddress(Info));
+          console.log("twallet :: " , twallet);
+          fetchUserType(twallet);
         }catch(error){
           console.log("Error connecting ..");
         }
@@ -43,7 +53,46 @@ const dispatch = useDispatch();
     }
     metaCheck();
 
-  }, [walletAddress,dispatch,tempwallet]);
+
+    
+
+    const fetchUserType = async (twallet) => {
+
+    fetch(`http://localhost:3001/home/findUserType`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+
+            walletAddress: twallet,
+        }),
+    })
+    .then((res) =>
+    {
+        if(res.status === 200){
+            return res.json()
+        }
+        else if(res.status === 404){
+            alert(" error here1")
+        }
+    })
+    .then((data) => {
+        console.log(data, "data");
+        setUserType(data.category);
+        const Info = {
+
+            walletAddress: twallet,
+            category: data.category
+        }
+        dispatch(assignWalletAddress(Info));
+
+        // setInsuranceCompanyList(data.insuranceCompany);
+    });
+
+  }
+
+  }, []);
   return (
     <div>
         <Navbar/>

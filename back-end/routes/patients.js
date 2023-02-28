@@ -12,6 +12,9 @@ const {
   getApprovedLabs,
   approveLabTech,
   approveInsuranceCompany,
+  getDoctorRatings,
+  doctorRatings,
+  isDoctorApproved
 } = require("../controller/patientController");
 const { checkSignUp } = require("../middleware/signUp");
 const router = express.Router();
@@ -31,4 +34,7 @@ router.get("/getApprovedLabs/:patientId", getApprovedLabs);
 router.post("/approveLabTech", approveLabTech);
 router.post("/approveInsuranceCompany", approveInsuranceCompany);
 router.get("/getDetails/:id", getDetails);
+router.post("/doctorRatings", doctorRatings);
+router.get("/getDoctorRatings/:doctorId", getDoctorRatings);
+router.get("/isDoctorApproved/:doctorId/:patientWalletAddress", isDoctorApproved);
 module.exports = router;

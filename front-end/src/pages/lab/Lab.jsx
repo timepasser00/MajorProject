@@ -12,6 +12,7 @@ const Lab = () => {
     const [selectedTab, setSelectedTab] = useState("list");
     const [walletAddress, setWalletAddress] = useState("");
     const tempwalletAddress = useSelector(state => state.walletAddress);
+    const userType = useSelector((state) => state.category);
     useEffect(() => {
         setWalletAddress(tempwalletAddress);
         console.log(walletAddress);
@@ -26,7 +27,7 @@ const handleTabChange = (tab) => {
         <div className='lab-tabs'>
         <div className={`tab-${selectedTab === "list" ? "active" : ""}`} onClick={() => handleTabChange("list")}>Lab Tech List</div>
         <div className={`tab-${selectedTab === "enroll" ? "active" : ""}`} onClick={() => handleTabChange("enroll")}>Enroll Lab Tech</div>
-        <div className={`tab-${selectedTab === "approve" ? "active" : ""}`} onClick={() => handleTabChange("approve")}>Approve Lab Tech</div>
+       {userType==="lab" && <div className={`tab-${selectedTab === "approve" ? "active" : ""}`} onClick={() => handleTabChange("approve")}>Approve Lab Tech</div>}
         </div>
         <div className='lab-container-tab'>
     {selectedTab === "list" && <LabTechList id={id}/>}

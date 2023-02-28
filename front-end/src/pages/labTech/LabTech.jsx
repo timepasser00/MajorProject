@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState } from 'react'
+import './labTech.css'
 const LabTech = () => {
   const navigate = useNavigate();
   const [patient, setPatient] = useState([])
@@ -44,7 +45,7 @@ const LabTech = () => {
   }
 
   return (
-    <div>LabTech
+    <div className="labTech-page-container">LabTech
 <button onClick={handleRequest}>My Patients</button>
 
 <table>
@@ -61,7 +62,7 @@ const LabTech = () => {
         <td>{patient.firstName}  {patient.lastName}</td>
         <td>{patient.age}</td>
         <td><button onClick={() =>handleNavigation(patient._id)}>Create Report</button></td>
-        <td><button onClick={() =>handleReportPage(patient._id)}   >Get Lab report</button></td>
+        {/* <td><button onClick={() =>handleReportPage(patient._id)}   >Get Lab report</button></td> */}
       </tr>
     ))}
   </tbody>

@@ -88,7 +88,8 @@ const RequestForm = () => {
 
   return (
     <div className="request-form-container">
-      <form onSubmit={handleRequest}>
+      <form className="request-form-form"   onSubmit={handleRequest}>
+      <div>
         {/* <label>
           Type:
           <input
@@ -107,6 +108,7 @@ const RequestForm = () => {
         {/* <br /> */}
         <label>
           Name:
+          </label>
           <input
             type="text"
             name="name"
@@ -115,10 +117,13 @@ const RequestForm = () => {
               setFormData({ ...formData, name: event.target.value })
             }
           />
-        </label>
+       
+        </div>
         {/* <br /> */}
+        <div>
         <label>
           Contact:
+          </label>
           <input
             type="text"
             name="contact"
@@ -127,10 +132,13 @@ const RequestForm = () => {
               setFormData({ ...formData, contact: event.target.value })
             }
           />
-        </label>
+       
+        </div>
         {/* <br /> */}
+        <div>
         <label>
           City:
+          </label>
           <input
             type="text"
             name="city"
@@ -142,10 +150,14 @@ const RequestForm = () => {
               })
             }
           />
-        </label>
+        
+       
+        </div>
         {/* <br /> */}
+        <div>
         <label>
           State:
+          </label>
           <input
             type="text"
             name="state"
@@ -157,10 +169,13 @@ const RequestForm = () => {
               })
             }
           />
-        </label>
+       
+        </div>
         {/* <br /> */}
+        <div>
         <label>
           Country:
+          </label>
           <input
             type="text"
             name="country"
@@ -172,11 +187,15 @@ const RequestForm = () => {
               })
             }
           />
-        </label>
+      
+        </div>
         {/* <br /> */}
+        <div>
         <label>
           Pincode:
+          </label>
           <input
+          
             type="text"
             name="pincode"
             value={formData.address.pincode}
@@ -187,10 +206,13 @@ const RequestForm = () => {
               })
             }
           />
-        </label>
+       
+        </div>
         {/* <br /> */}
+        {selectedOption==="hospital" &&<div>
         <label>
           Specialities:
+          </label>
           <select
             value={formData.specialities}
             onChange={(event) =>
@@ -203,7 +225,28 @@ const RequestForm = () => {
             <option value="onco">Oncology</option>
             <option value="pedia">Pediatrics</option>
           </select>
-        </label>
+      
+        </div>
+}
+
+{selectedOption==="lab" &&<div>
+        <label>
+          Specialities:
+          </label>
+          <select
+            value={formData.specialities}
+            onChange={(event) =>
+              setFormData({ ...formData, specialities: event.target.value })
+            }
+          >
+            <option value="ortho">Sugar</option>
+            <option value="neuro">Blood Test</option>
+            <option value="cardio">Urine Test</option>
+            
+          </select>
+      
+        </div>
+}
         {/* <br /> */}
         <input type="submit" value="Submit" />
       </form>

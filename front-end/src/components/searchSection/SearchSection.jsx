@@ -83,7 +83,7 @@ console.log(searchType,"searchType")
         </label>
         <label htmlFor="search-term">
           Search Term:
-          <input type="text" id="query" name="query"  onChange={(e)=> setQuery(e.target.value)} />
+          <input type="text" id="query" name="query"  onChange={(e)=> setQuery(e.target.value)} /> 
         </label>
         <h3>{searchType}</h3>
         <button type="submit">Search</button>

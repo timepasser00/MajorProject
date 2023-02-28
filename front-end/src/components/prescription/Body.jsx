@@ -30,7 +30,7 @@ useEffect(() => {
         {/* { referral && <p><strong>Referred by:</strong> {referral.name}</p> } */}
       </div>
         </div>
-        <img src={qr_code} alt="qr_code" className="qr-code" />
+        {/* <img src={qr_code} alt="qr_code" className="qr-code" /> */}
       </div>
 
       {/* Doctor and referral information */}

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Prescription from "../../components/prescription/Prescription";
+import "./doctor.css";
 
 const Doctor = () => {
   const navigate = useNavigate();
@@ -100,8 +101,8 @@ const Doctor = () => {
     console.log("Doctor");
   };
   return (
-    <div>
-      Doctor
+    <div className="doctor-page-container">
+      <h2>Doctor</h2>
       <button onClick={handleRequest}>My Paients</button>
       <table>
         <thead>

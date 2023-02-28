@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {useState} from "react";
 import { useSelector } from "react-redux";
 import Prescription from "../../components/prescription/Prescription";
+import "./insuranceCompany.css";
 
 const InsuranceCompany = () => {
     const [prescriptionCnt, setPrescriptionCnt] = useState(0);
@@ -95,9 +96,9 @@ const InsuranceCompany = () => {
         }
 
     return (
-        <div>
-        <h1>Insurance Company
-        </h1>
+        <div className="insuranceCompany-page-container">
+        <h2>Insurance Company
+        </h2>
 
         {/* <table>
             <tr>

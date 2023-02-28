@@ -9,7 +9,7 @@ const PartnersSection = () => {
       <h2>Our Partners</h2>
       <div className="partners-container">
         <div className="partner-card">
-          <h3>Medical Shop</h3>
+          <h3>Lab</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
         </div>
         <div className="partner-card">

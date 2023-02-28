@@ -1,5 +1,6 @@
 import React from 'react'
 import {useState} from 'react'
+import './labTechJoinRequest.css'
 const LabTechJoinRequest = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -39,9 +40,9 @@ const LabTechJoinRequest = (props) => {
 
 
   return (
-    <div>
-    <h1>Lab-tech Join Request</h1>
-    <form onSubmit={handleSubmit}>
+    <div className='lab-tech-join-request-container'>
+    <h2>Lab-tech Join Request</h2>
+    <form  className='lab-tech-join-request-form' onSubmit={handleSubmit}>
         <div>
             <label>First Name</label>
             <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>

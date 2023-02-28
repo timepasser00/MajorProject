@@ -428,6 +428,89 @@ const approveInsuranceCompany = async (req, res) => {
     res.status(400).json({ err: err.message });
   }
 };
+const doctorRatings= async (req, res) => {
+  const { doctorId, patientId, star } = req.body;
+  console.log("doctorId",doctorId,"star",star);
+  try {
+    const doctor = await Doctor.findById(doctorId);
+    console.log("doctor before",doctor);
+    if (!doctor) {
+      res.status(400).json({ err: "Doctor not found" });
+    }
+    doctor.rating.push(star);
+    // doctor.rating.push(star);
+    await doctor.save();
+
+    console.log("doctor",doctor);
+    res.status(200).json({ doctor });
+   let total=0;
+   for(let i=0;i<doctor.rating.length;i++){
+     total+=doctor.rating[i];
+   }
+    const avg=Math.floor(total/doctor.rating.length);
+    // console.log("avg",avg);
+    // console.log(doctor.avgRating);
+    doctor.avgRating=avg;
+    await doctor.save();
+   
+    // doctor.rating.splice(0, doctor.rating.length);
+    // await doctor.save();
+    // console.log("doctor",doctor);
+    // res.status(200).json({ doctor });
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+};
+const getDoctorRatings = async (req, res) => {
+  const { doctorId } = req.params;
+  try {
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      res.status(400).json({ err: "Doctor not found" });
+    }
+   let total=0;
+   for(let i=0;i<doctor.rating.length;i++){
+     total+=doctor.rating[i];
+   }
+    const avg=Math.floor(total/doctor.rating.length);
+
+    res.status(200).json({ avg });
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
+const isDoctorApproved = async (req, res) => {
+  const { doctorId, patientWalletAddress } = req.params;
+  // console.log("doctorId",doctorId,"patientWalletAddress",patientWalletAddress);
+  try {
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      res.status(400).json({ err: "Doctor not found" });
+    }
+    const instance = await require("../exports/instanceExport").getInstance();
+    const patientId = await instance.getId(patientWalletAddress, {
+      from: patientWalletAddress,
+    });
+    let isApproved = false;
+    // for (let i = 0; i < doctor.approvedBy.length; i++) {
+    //   if (doctor.approvedBy[i] === patientId) {
+    //     isApproved = true;
+    //     break;
+    //   }
+    // }
+    console.log(patientId,"patientId")
+    console.log(doctor.approvedBy,"array");
+    doctor.approvedBy.includes(patientId) ? (isApproved = true) : (isApproved = false);
+    console.log(isApproved,"isApproved")
+    res.status(200).json({ isApproved });
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
+
+
 
 
 
@@ -446,5 +529,8 @@ module.exports = {
   approveLabs,
   approveLabTech,
   approveInsuranceCompany,
+  doctorRatings,
+  getDoctorRatings,
+  isDoctorApproved,
 };
   

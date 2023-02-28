@@ -13,12 +13,12 @@ const artifacts = require("../build/contracts/base.json");
 const CONTACT_ABI = require("./config");
 const CONTACT_ADDRESS = require("./config");
 const doctorRouter = require("./routes/doctor");
-const labRouter = require("./routes/lab");
+const labRouter = require("./routes/lab");  
 const labTechRouter = require("./routes/labTech"); 
 const insuranceCompanyRouter = require("./routes/insuranceCompany");  
 
       
-const app = express();
+const app = express();  
 app.use(cors()); 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

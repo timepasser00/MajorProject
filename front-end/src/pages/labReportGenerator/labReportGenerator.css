@@ -1,0 +1,35 @@
+.labReportGenerator-page-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.labReportGenerator-page-container button{
+    border: none;
+    cursor: pointer;
+    outline: none;
+    background-color: #1e90ff;
+    width: 100px;
+    height: 40px;
+    color: white;
+    padding: 5px;
+    margin: 20px;
+}
+.labReportGenerator-page-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.labReportGenerator-page-body >form  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+}

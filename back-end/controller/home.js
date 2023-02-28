@@ -17,7 +17,7 @@ let walletAddress;
 
 const owner = process.env.OWNER;
 
-console.log("owner :", owner);
+
 
 // registers the usr
 const signUp = async (req, res) => {
@@ -108,9 +108,11 @@ const logIn = async (req, res) => {
 
 const findUserType=async(req,res)=>{
     const walletAddress = req.body.walletAddress;
-    console.log(walletAddress ,"from findUserType");
+    console.log((walletAddress).toLowerCase() ,"from findUserType");
     let category="";
     try{
+      console.log("owner :",(owner).toLowerCase());
+    
         const instance = await getInstance();
         const flag = await instance.isParticipant(walletAddress, { from: owner });
         console.log("flag : ", flag);
@@ -139,9 +141,19 @@ const findUserType=async(req,res)=>{
           if(isLabTech){
             category="labTech";
           }
+        
           res.status(200).json({
             category : category,
         });
+      }  
+      
+      else if(category===""){
+        if(""+((walletAddress).toLowerCase())===(""+(owner).toLowerCase())){
+          category="admin";
+        }
+        res.status(200).json({
+          category : category,
+      });
       }
       else{
 
@@ -164,6 +176,17 @@ const findUserType=async(req,res)=>{
     
        
     }
+    const getId=async(req,res)=>{
+      const walletAddress = req.params.walletAddress;
+      const instance = await require("../exports/instanceExport").getInstance();
+      const _id = await instance.getId(walletAddress, { from:walletAddress});
+      res.status(200).json({
+        id : _id,
+    });
+    }
+      
+
+
 
 
 
@@ -172,5 +195,6 @@ const findUserType=async(req,res)=>{
 module.exports = {
   signUp,
   logIn,
-  findUserType
+  findUserType,
+  getId
 };

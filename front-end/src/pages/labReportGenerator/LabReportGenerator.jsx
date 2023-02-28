@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-
+import "./labReportGenerator.css";
 const LabReportGenerator = () => {
   const location = useLocation();
   const patientId = location.state.pId;
@@ -118,13 +118,13 @@ const LabReportGenerator = () => {
       };
 
   return (
-    <div>
-      <h1>Lab Report Generator</h1>
+    <div className="labReportGenerator-page-container">
+      <h2>Lab Report Generator</h2>
       {/* <button onClick={getPrescriptionId}>getPresctioni</button> */}
       <button onClick={getLabTestInfo}>getLabTestInfo</button>
 
-      <div>
-        <h1>Lab Tests</h1>
+      <div className="labReportGenerator-page-body">
+        <h3>Lab Tests</h3>
         <form onSubmit={handleSubmit}>
       <table>
         <thead>
