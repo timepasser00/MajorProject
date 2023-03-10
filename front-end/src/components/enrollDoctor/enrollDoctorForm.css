@@ -1,0 +1,29 @@
+.doctor-enrollment-form-container{
+    width: 80%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid gray;
+    border-radius: 10px;
+    box-shadow: 2px 4px;
+    padding: 10px;
+}
+
+.doctor-enrollment-form-content{
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+}
+
+
+.doctor-enrollment-form-content > button{
+    width: 110px;
+    height: 30px;
+    border-radius: 5px;
+}

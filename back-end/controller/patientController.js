@@ -99,12 +99,27 @@ const searchHospital = async (req, res) => {
     const hospital = await Hospital.find({
       $or: [
         { name: searchRegex },
-        // { address:  searchRegex  },
-        // { city:  searchRegex  },
-        // { state:  searchRegex  },
-        // { country:  searchRegex  },
-        // { pincode: searchRegex  },
+        { "address.city":  searchRegex  },
         { "address.state": searchRegex },
+        // { contact: searchRegex },
+      ],
+    });
+    res.status(200).json(hospital);
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
+const searchLab = async (req, res) => {
+  const { query } = req.params;
+  console.log("query", query);
+  try {
+    const searchRegex = new RegExp(query, "i");
+    const hospital = await Lab.find({
+      $or: [
+        { name: searchRegex },
+        { "address.city":  searchRegex  },
+        { state: searchRegex },
         { contact: searchRegex },
       ],
     });
@@ -114,42 +129,28 @@ const searchHospital = async (req, res) => {
   }
 };
 
-const searchHospitalForAppointment = async (req, res) => {
+const   searchHospitalForAppointment = async (req, res) => {
   const { searchType, searchText } = req.body;
   console.log("searchType", searchType);
   console.log("searchText", searchText);
   try {
     const searchRegex = new RegExp(searchText, "i");
     if (searchType === "hospital") {
-      const hospitalList = await Hospital.find({
+      const hospitalList = await Hospital.find(
+        {
         $or: [
           { name: searchRegex },
           // { address:  searchRegex  },
-          // { city:  searchRegex  },
+          { "address.city" :  searchRegex  },
           // { state:  searchRegex  },
           // { country:  searchRegex  },
           // { pincode: searchRegex  },
           { "address.state": searchRegex },
           { contact: searchRegex },
         ],
-      });
+      }
+      );
       res.status(200).json(hospitalList);
-      //   const hospital=await Hospital.find({
-      //     name:  searchRegex
-      //   });
-      //   res.status(200).json( hospital );
-      // }
-      // else if(searchType==="state"){
-      //   const hospital=await Hospital.find({
-      //     'address.state':searchRegex
-      //   });
-      //   res.status(200).json( hospital );
-      // }
-      // else if(searchType==="contact"){
-      //   const hospital=await Hospital.find({
-      //     contact:searchRegex
-      //   });
-      //   res.status(200).json( hospital );
     } else if (searchType === "doctor") {
       const hospital = await Doctor.find({
         firstName: searchRegex,
@@ -252,12 +253,9 @@ const approveDoctor = async (req, res) => {
   const { doctorId, patientWalletAddress } = req.body;
   let pId="";
 
- 
-
   try {
     console.log("doctorId", doctorId, "patientWalletAddress", patientWalletAddress);
     const doctor = await Doctor.findById(doctorId);
-  
     if (!doctor) {
       res.status(400).json({ err: "Doctor not found" }); 
     }
@@ -268,9 +266,6 @@ const approveDoctor = async (req, res) => {
     if (!patient) {
       res.status(400).json({ err: "Patient not found" });
     }
-    
-
-   
     pId=patientId;
     patient.approvedDoctors.push(doctorId);
     await patient.save();
@@ -280,7 +275,6 @@ const approveDoctor = async (req, res) => {
   } catch (err) {
     if(pId!==""){
     const patient=await Patient.findById(pId);
-
     patient.approvedDoctors.pop(doctorId);
     await patient.save();
     const doctor=await Doctor.findById(doctorId);
@@ -290,6 +284,45 @@ const approveDoctor = async (req, res) => {
     res.status(400).json({ err: err.message });
   }
 };
+
+// uncomplete : add feature to remvoke ehr access permission
+const removeDoctor = async (req, res) => {
+  // const { doctorId,patientId } = req.body
+  const { doctorId, patientWalletAddress } = req.body;
+  let pId="";
+
+  try {
+    console.log("doctorId", doctorId, "patientWalletAddress", patientWalletAddress);
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      res.status(400).json({ err: "Doctor not found" }); 
+    }
+    const instance = await require("../exports/instanceExport").getInstance(); 
+    await instance.handleEhrPermission(doctorId,0,{from:patientWalletAddress});
+    const patientId=await instance.getId(patientWalletAddress,{from:patientWalletAddress});
+    const patient= await Patient.findById(patientId);
+    if (!patient) {
+      res.status(400).json({ err: "Patient not found" });
+    }
+    pId=patientId;
+    patient.approvedDoctors.pop(doctorId);
+    await patient.save();
+    doctor.approvedBy.pop(patientId);
+    await doctor.save();
+    res.status(200).json({ doctor});
+  } catch (err) {
+    if(pId!==""){
+    const patient=await Patient.findById(pId);
+    patient.approvedDoctors.push(doctorId);
+    await patient.save();
+    const doctor=await Doctor.findById(doctorId);
+    doctor.approvedBy.push(patientId);
+    await doctor.save();
+    }
+    res.status(400).json({ err: err.message });
+  }
+};
+
 const approveLabTech = async (req, res) => {
   const { labTechId, patientWalletAddress } = req.body;
   let pId="";
@@ -520,6 +553,7 @@ module.exports = {
   getDetails,
 
   searchHospital,
+  searchLab,
   searchHospitalForAppointment,
   getAvailableSlots,
   bookAppointment,
@@ -532,5 +566,6 @@ module.exports = {
   doctorRatings,
   getDoctorRatings,
   isDoctorApproved,
+  removeDoctor,
 };
   

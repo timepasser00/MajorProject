@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 import "./requestForm.css";
 
@@ -9,6 +10,7 @@ const RequestForm = () => {
   const location = useLocation();
   const selectedOption = location.state.data;
   const tempwallet = useSelector((state) => state.walletAddress);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   console.log(tempwallet, "tempwalletFromRequestForm");
   console.log(selectedOption, "selectedOptionFromRequestForm");
@@ -31,31 +33,7 @@ const RequestForm = () => {
     formData.walletAddress = tempwallet;
   }, [formData, tempwallet]);
 
-  //   const handleChange = (event) => {
-
-  //   };
-
-  //   const handleAddressChange = (event) => {
-  //     const { name, value } = event.target;
-  //     setFormData((prevState) => ({
-  //       ...prevState,
-  //       address: {
-  //         ...prevState.address,
-  //         [name]: value
-  //       }
-  //     }));
-  //   };
-
-  //   const handleSpecialitiesChange = (event) => {
-  //     const { value } = event.target;
-  //     setFormData((prevState) => ({
-  //       ...prevState,
-  //       specialities: value
-  //     }));
-  //   };
-
  
-
   const handleRequest = async (e) => {
     e.preventDefault();
     console.log(formData, "formData");
@@ -73,42 +51,17 @@ const RequestForm = () => {
     if (response.status === 200) {
       const msg = await response.text();
       console.log(msg);
+      setIsSubmitted(true);
       alert(msg);
     }
-    // if(func === "signUp"){
-    //   const msg = await response.text();
-    //   console.log(msg);
-    //   alert(msg);
-    // }else{
-    //   const msg = await response.text();
-    //   console.log(msg);
-    //   alert(msg);
-    // }
   };
 
   return (
     <div className="request-form-container">
-      <form className="request-form-form"   onSubmit={handleRequest}>
-      <div>
-        {/* <label>
-          Type:
-          <input
-            type="text"
-            name="type"
-            value={formData.type}
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                type: event.target.value,
-                walletAddress: tempwallet,
-              })
-            }
-          />
-        </label> */}
-        {/* <br /> */}
-        <label>
-          Name:
-          </label>
+      <h2>Request Form Details </h2>
+      <form className="request-form-form" onSubmit={handleRequest}>
+        <div>
+          <label>Name:</label>
           <input
             type="text"
             name="name"
@@ -117,13 +70,10 @@ const RequestForm = () => {
               setFormData({ ...formData, name: event.target.value })
             }
           />
-       
         </div>
         {/* <br /> */}
         <div>
-        <label>
-          Contact:
-          </label>
+          <label>Contact:</label>
           <input
             type="text"
             name="contact"
@@ -132,13 +82,10 @@ const RequestForm = () => {
               setFormData({ ...formData, contact: event.target.value })
             }
           />
-       
         </div>
         {/* <br /> */}
         <div>
-        <label>
-          City:
-          </label>
+          <label>City:</label>
           <input
             type="text"
             name="city"
@@ -150,14 +97,10 @@ const RequestForm = () => {
               })
             }
           />
-        
-       
         </div>
         {/* <br /> */}
         <div>
-        <label>
-          State:
-          </label>
+          <label>State:</label>
           <input
             type="text"
             name="state"
@@ -169,13 +112,10 @@ const RequestForm = () => {
               })
             }
           />
-       
         </div>
         {/* <br /> */}
         <div>
-        <label>
-          Country:
-          </label>
+          <label>Country:</label>
           <input
             type="text"
             name="country"
@@ -187,15 +127,11 @@ const RequestForm = () => {
               })
             }
           />
-      
         </div>
         {/* <br /> */}
         <div>
-        <label>
-          Pincode:
-          </label>
+          <label>Pincode:</label>
           <input
-          
             type="text"
             name="pincode"
             value={formData.address.pincode}
@@ -206,49 +142,45 @@ const RequestForm = () => {
               })
             }
           />
-       
         </div>
         {/* <br /> */}
-        {selectedOption==="hospital" &&<div>
-        <label>
-          Specialities:
-          </label>
-          <select
-            value={formData.specialities}
-            onChange={(event) =>
-              setFormData({ ...formData, specialities: event.target.value })
-            }
-          >
-            <option value="ortho">Orthopedics</option>
-            <option value="neuro">Neurology</option>
-            <option value="cardio">Cardiology</option>
-            <option value="onco">Oncology</option>
-            <option value="pedia">Pediatrics</option>
-          </select>
-      
-        </div>
-}
+        {selectedOption === "hospital" && (
+          <div>
+            <label>Specialities:</label>
+            <select
+              value={formData.specialities}
+              onChange={(event) =>
+                setFormData({ ...formData, specialities: event.target.value })
+              }
+            >
+              <option value="ortho">Orthopedics</option>
+              <option value="neuro">Neurology</option>
+              <option value="cardio">Cardiology</option>
+              <option value="onco">Oncology</option>
+              <option value="pedia">Pediatrics</option>
+            </select>
+          </div>
+        )}
 
-{selectedOption==="lab" &&<div>
-        <label>
-          Specialities:
-          </label>
-          <select
-            value={formData.specialities}
-            onChange={(event) =>
-              setFormData({ ...formData, specialities: event.target.value })
-            }
-          >
-            <option value="ortho">Sugar</option>
-            <option value="neuro">Blood Test</option>
-            <option value="cardio">Urine Test</option>
-            
-          </select>
-      
-        </div>
-}
+        {selectedOption === "lab" && (
+          <div>
+            <label>Specialities:</label>
+            <select
+              value={formData.specialities}
+              onChange={(event) =>
+                setFormData({ ...formData, specialities: event.target.value })
+              }
+            >
+              <option value="diabities">Sugar </option>
+              <option value="bloodTest">Blood Test</option>
+              <option value="cancer">Cancer Test</option>
+            </select>
+          </div>
+        )}
         {/* <br /> */}
-        <input type="submit" value="Submit" />
+
+        {!isSubmitted && <input type="submit" value="Submit" />}
+        {isSubmitted && <button >{<Link to="/home">Home</Link>}</button>}
       </form>
     </div>
   );

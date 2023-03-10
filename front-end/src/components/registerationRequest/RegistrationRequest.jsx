@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+
+
 const RegistrationRequest = () => {
   const [type, setType] = useState("hospital");
   const [name, setName] = useState("");

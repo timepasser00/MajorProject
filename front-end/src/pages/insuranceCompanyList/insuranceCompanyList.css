@@ -1,0 +1,14 @@
+.insurance-company-claim-list th , .insurance-company-claim-list td{
+    border: 2px solid black;
+    padding: 5px;
+    text-align: center;
+}
+
+.insurance-company-claim-container{
+    height: 100%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

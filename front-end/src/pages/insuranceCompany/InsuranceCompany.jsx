@@ -1,106 +1,100 @@
 import React from "react";
-import {useParams} from "react-router-dom";
-import {useEffect} from "react";
-import {useState} from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Prescription from "../../components/prescription/Prescription";
 import "./insuranceCompany.css";
 
 const InsuranceCompany = () => {
-    const [prescriptionCnt, setPrescriptionCnt] = useState(0);
-    const [prescriptionId1, setPrescriptionId1] = useState(0);
-    const [flag, setFlag] = useState(false);
-    const {id}=useParams();
-    const [patient, setPatient] = useState([]);
-    const [prescription, setPrescription] = useState({});
-    const walletAddress=useSelector((state)=>state.walletAddress);
-    useEffect(() => {
-        console.log(id);
-   fetch(`http://localhost:3001/insuranceCompany/getAllPatients/${id}`, {
-        
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
+  const [prescriptionCnt, setPrescriptionCnt] = useState(0);
+  const [prescriptionId1, setPrescriptionId1] = useState(0);
+  const [flag, setFlag] = useState(false);
+  const { id } = useParams();
+  const [patient, setPatient] = useState([]);
+  const [prescription, setPrescription] = useState({});
+  const walletAddress = useSelector((state) => state.walletAddress);
+  useEffect(() => {
+    console.log(id);
+    fetch(`http://localhost:3001/insuranceCompany/getAllPatients/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((res) =>
-    {
-        if(res.status === 200){
-            return res.json()
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(" error here");
         }
-        else{
-            alert(" error here")
-        }
-    })
-    .then((data) => {
+      })
+      .then((data) => {
         console.log(data, "data");
         setPatient(data.patient);
         // setInsuranceCompanyList(data.insuranceCompany);
-    }); 
-    }, [])
+      });
+  }, []);
 
-
-    const getPrescriptionId = async (patientId) => {
-        fetch(`http://localhost:3001/doctor/getPrescriptionCnt/${patientId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => {
-            if (res.status === 200) {
-              return res.json();
-            } else {
-              alert(" error here");
-            }
-          })
-          .then((data) => {
-            setPrescriptionCnt(() => data.prescriptionCnt);
-    
-            console.log(data, "data");
-            console.log(prescriptionCnt, "prescriptionCnt");
-          });
-        // console.log("Doctor");
-      };
-        const fetchPrescription = async (e, patientId) => {
-
-            e.preventDefault();
-            console.log(prescriptionId1, "e.target.value", patientId);
-            fetch(
-              `http://localhost:3001/doctor/getPrescription/${patientId}/${prescriptionId1}/${walletAddress}`,
-              {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            )
-              .then((res) => {
-                if (res.status === 200) {
-                  return res.json();
-                } else {
-                  alert(" error here");
-                }
-              })
-              .then((data) => {
-                setFlag(true);
-                console.log(data, "data");
-                console.log(data.prescription, "data.prescription");
-                console.log(
-                  data.prescription.symptoms,
-                  "data.prescription.prescriptionId"
-                );
-                console.log(data.labReport, "data.prescription.prescriptionId");
-                setPrescription(data);
-              });
+  const getPrescriptionId = async (patientId) => {
+    fetch(`http://localhost:3001/doctor/getPrescriptionCnt/${patientId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(" error here");
         }
+      })
+      .then((data) => {
+        setPrescriptionCnt(() => data.prescriptionCnt);
 
-    return (
-        <div className="insuranceCompany-page-container">
-        <h2>Insurance Company
-        </h2>
+        console.log(data, "data");
+        console.log(prescriptionCnt, "prescriptionCnt");
+      });
+    // console.log("Doctor");
+  };
+  const fetchPrescription = async (e, patientId) => {
+    e.preventDefault();
+    console.log(prescriptionId1, "e.target.value", patientId);
+    fetch(
+      `http://localhost:3001/doctor/getPrescription/${patientId}/${prescriptionId1}/${walletAddress}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(" error here");
+        }
+      })
+      .then((data) => {
+        setFlag(true);
+        console.log(data, "data");
+        console.log(data.prescription, "data.prescription");
+        console.log(
+          data.prescription.symptoms,
+          "data.prescription.prescriptionId"
+        );
+        console.log(data.labReport, "data.prescription.prescriptionId");
+        setPrescription(data);
+      });
+  };
 
-        {/* <table>
+  return (
+    <div className="insuranceCompany-page-container">
+      <h2>Insurance Company</h2>
+
+      {/* <table>
             <tr>
                 <th>Name</th>
                 <th>Age</th>
@@ -117,8 +111,7 @@ const InsuranceCompany = () => {
                 ))}
         </table> */}
 
-
-<table>
+      <table>
         <thead>
           <tr>
             <th>Patient Name</th>
@@ -134,14 +127,13 @@ const InsuranceCompany = () => {
                 {patient.firstName} {patient.lastName}
               </td>
               <td>{patient.age}</td>
-             
+
               <td>
                 <button onClick={() => getPrescriptionId(patient._id)}>
                   View Past Prescription{" "}
                 </button>
               </td>
               <td>
-             
                 <form onSubmit={(e) => fetchPrescription(e, patient._id)}>
                   <select onChange={(e) => setPrescriptionId1(e.target.value)}>
                     <option value="0">Select</option>
@@ -166,11 +158,11 @@ const InsuranceCompany = () => {
             )}
             doctor={prescription.prescription.doctor}
             patient={prescription.prescription.patient}
-            view = {true}
+            view={true}
           />
         </>
       )}
-        </div>
-    );
-    }
-    export default InsuranceCompany;
+    </div>
+  );
+};
+export default InsuranceCompany;

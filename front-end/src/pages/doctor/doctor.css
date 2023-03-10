@@ -18,3 +18,9 @@
     padding: 5px;
     margin: 10px;
 }
+
+.my-patient-table th , .my-patient-table td{
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}

@@ -45,6 +45,8 @@ const EmployeeApprove = (props) => {
         })
         .then(res =>{
             if(res.status===200){
+                const newRequsets = requests.filter((request)=>request._id !== id);
+                setRequests(newRequsets);
                 deleteRequest(id)
                 return res.json()
             
@@ -53,8 +55,7 @@ const EmployeeApprove = (props) => {
         } )
         .then(data => {
             console.log(data, "data")
-           
-
+ 
         })
     }
     const deleteRequest = (id) => {

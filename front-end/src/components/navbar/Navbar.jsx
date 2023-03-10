@@ -9,11 +9,11 @@ const Navbar = () => {
   return (
     <nav className="navbar">
      <a><Link to="/login">Register/login</Link></a>
-      <a><Link to="/appointment">Appointment</Link></a>
-      <a><Link to="/hospitals">Hospitals</Link></a>
+     <a><Link to="/userGuide">User Guide</Link></a>
+      {/* <a><Link to="/appointment">Appointment</Link></a>
+      <a><Link to="/hospitals">Hospitals</Link></a> */}
      { userType==="admin" && <a><Link to="/admin">Admin</Link></a>}
       
-      {/* <a href="/hospitals"></a> */}
     </nav>
   );
 };

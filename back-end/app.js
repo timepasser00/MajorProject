@@ -23,6 +23,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+
 const port = 3001;  
   
 if (typeof web3 !== "undefined") {

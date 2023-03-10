@@ -20,6 +20,7 @@ useEffect(() => {
         // const arrData=Object.keys(data).map((key) => data[key]);
         console.log(data, "data");
         setLabTechList(data.labTechs);
+        setFilteredList(data.labTechs);
       })
       .catch((err) => console.log(err));
   }, []);

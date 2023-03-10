@@ -1,0 +1,31 @@
+.user-guide-container{
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: 100%;
+    margin : auto;
+    border: 2px solid black;
+}
+
+.user-guide-header{
+  height: 10%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgb(204, 223, 204);
+  font-size: 40px;
+}
+
+.user-category-section{
+    height: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid black;
+    font-size: 20px;
+}

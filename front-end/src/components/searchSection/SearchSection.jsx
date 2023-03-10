@@ -1,3 +1,4 @@
+
 // SearchSection.js
 import React from 'react';
 import './searchSection.css';
@@ -36,7 +37,11 @@ console.log(searchType,"searchType")
     Navigate({
       pathname: '/hospitals',
       search:createSearchParams({
-        keyword:query
+        // keyword:query
+       
+          searchType:searchType,
+          searchText:query
+        
       }).toString()
     })
   }
@@ -85,7 +90,7 @@ console.log(searchType,"searchType")
           Search Term:
           <input type="text" id="query" name="query"  onChange={(e)=> setQuery(e.target.value)} /> 
         </label>
-        <h3>{searchType}</h3>
+      
         <button type="submit">Search</button>
       </form>
     </div>

@@ -1,13 +1,14 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
-
+import './enrollDoctorForm.css'
 const EnrollDoctorForm = (props) => {
   const walletAddress=useSelector((state) =>state.walletAddress)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [yearOfExperience, setYearOfExperience] = useState("");
     const [qualification, setQualification] = useState("");
+    const [hasApplied,setHasApplied] = useState(false);
     const handleSubmit= (e) => {
         e.preventDefault();
         // const doctor = {
@@ -33,6 +34,7 @@ const EnrollDoctorForm = (props) => {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success:', data);
+        setHasApplied(true);
       }
       )
       .catch((error) => {
@@ -45,9 +47,9 @@ const EnrollDoctorForm = (props) => {
 
 
   return (
-    <div>
-        <h1>Enroll Doctor Form</h1>
-        <form onSubmit={handleSubmit}>
+    <div className='doctor-enrollment-form-container'>
+        <h2>Enroll Doctor Form</h2>
+        <form className='doctor-enrollment-form-content' onSubmit={handleSubmit}>
             <div>
                 <label>First Name</label>
                 <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
@@ -64,7 +66,9 @@ const EnrollDoctorForm = (props) => {
                 <label>Qualification</label>
                 <input type="text" value={qualification} onChange={(e) => setQualification(e.target.value)}/>
                 </div>
-                <button type="submit">Enroll</button>
+                <br/>
+                {!hasApplied && <button type="submit">Apply</button>}
+                {/* {hasApplied && <button >Close</button>} */}
 
 
    </form>

@@ -54,6 +54,8 @@ const registrationRequest = async (req, res) => {
     hospitalId,
     walletAddress,
   } = req.body;
+  console.log("docWalledAddress",walletAddress);
+  
   const encryptedWalletAddress = cryptr.encrypt(walletAddress);
   console.log(
     firstName,

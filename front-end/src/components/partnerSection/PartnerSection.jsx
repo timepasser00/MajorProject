@@ -1,7 +1,7 @@
 // PartnersSection.js
 // PartnersSection.js
-import React from 'react';
-import './partnerSection.css';
+import React from "react";
+import "./partnerSection.css";
 
 const PartnersSection = () => {
   return (
@@ -10,15 +10,21 @@ const PartnersSection = () => {
       <div className="partners-container">
         <div className="partner-card">
           <h3>Lab</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+          <p>
+            Our Lab partners provide reliable and affordable Lab Tests. Just one click and you can have your lab tests done. 
+          </p>
         </div>
         <div className="partner-card">
           <h3>Hospital</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+          <p>
+            Our Hospital partners forms a huge chain of hospitals, whom you can trust. You can select hospital based on the based doctor, city or speciality.
+          </p>
         </div>
         <div className="partner-card">
           <h3>Insurance Company</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+          <p>
+            Our Insurance partners provide a hassle free health claims. They trust the health records, they get from our platform, hence speed tracking your health claims.
+          </p>
         </div>
       </div>
     </div>

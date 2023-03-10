@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const PatientDetailsForm = (props) => {
   const walletAddress = useSelector((state) => state.walletAddress);
   console.log("walletAddress from pform :: ", walletAddress);
@@ -10,8 +11,8 @@ const PatientDetailsForm = (props) => {
   const [age, setAge] = useState(null);
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
+  const [detailsSubmitted, setDetailsSubmitted] = useState(false);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("walletAddress :: ", walletAddress);
@@ -36,10 +37,17 @@ const PatientDetailsForm = (props) => {
       setFirstName("");
       setLastName("");
       setEmail("");
+      setDetailsSubmitted((prev)=>!prev);
       alert("Details submitted successfully");
+     
       // props.setFlag(true);
       console.log("success");
     }
+  };
+  const navigate = useNavigate();
+  const handleNavigation = () => {
+    console.log("home");
+    navigate(`/home`);
   };
   return (
     <div className="form-main-container">
@@ -73,8 +81,14 @@ const PatientDetailsForm = (props) => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button className="btn">Submit</button>
+        {!detailsSubmitted && <button className="btn">Submit</button>}
+        
       </form>
+      {detailsSubmitted && (
+          <button onClick={handleNavigation} className="btn" >
+            Close
+          </button>
+        )}
     </div>
   );
 };

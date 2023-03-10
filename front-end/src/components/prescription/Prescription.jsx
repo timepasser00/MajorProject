@@ -4,6 +4,7 @@ import Header from "./Header";
 
 const Prescription = (props) => {
 
+  
   console.log(props, "props");
   const data = {
     patient: {

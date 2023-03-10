@@ -16,8 +16,9 @@
     align-items: center;
     width: 100%;
     height: 50px;
-    background-color: #f1f1f1;
+    background-color: black;
    margin-bottom: 5px;
+   color: white;
 }
 
 .patient-page-container{
@@ -39,18 +40,20 @@
     display:flex;
     justify-content: center;
     align-items: center;
+    background-color: black;
 }
 .my-prescription-page-tab >div>form >button{
    
     border: none;
     cursor: pointer;
     outline: none;
-    background-color: #1e90ff;
+    background-color: white;
     width: 60px;
     height: 30px;
-    color: white;
+    color: black;
     padding: 5px;
     margin-left: 10px;
+    border-radius: 5px;
 
 }
 .my-prescription-page-tab >div>button{
@@ -59,9 +62,10 @@
     border: none;
     cursor: pointer;
     margin-right: 10px;
-    background-color: #1e90ff;
+    background-color: white;
     width: auto;
     height: 30px;
-    color: white;
+    color: black;
     padding: 5px;
+    border-radius: 10px;
 }

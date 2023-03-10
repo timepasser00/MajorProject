@@ -1,0 +1,8 @@
+☐ Make  a close button in patient details form
+☐ Style the home return button in hospital details form 
+☐ Make the specialities field in hospital registration form a multiselect (optional : with an option to enter on your own.)
+☐ Make the admin page protected.
+☐ Show the Hospital name in hospital page. 
+☐ Style the doctor application form.
+☐ don't show past time slots in book appointment slots.
+☐ once appointment is done, show that you have an appointment.

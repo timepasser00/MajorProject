@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./insuranceCompanyDetailsForm.css";
 const InsuranceCompanyDetailsForm = () => {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  
+  const [isSubmitted , setIsSubmitted] = useState(false);
 
   const walletAddress= useSelector((state) => state.walletAddress);
 
@@ -23,6 +24,7 @@ const InsuranceCompanyDetailsForm = () => {
       {
         // console.log(res);
         if(res.status === 200){
+          setIsSubmitted(true);
           return  res.json()
         }
         else{
@@ -41,8 +43,15 @@ const InsuranceCompanyDetailsForm = () => {
        
       });
   };
+
+  const navigate = useNavigate();
+
+  const navigateHome = ()=>{
+    navigate("/home");
+  }
   return (
     <div className="insuraceComapnyDetailsForm-conainer">
+      <h2>Details Form</h2>
       <form className="insuraceComapnyDetailsForm" onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
@@ -62,7 +71,8 @@ const InsuranceCompanyDetailsForm = () => {
             onChange={(e) => setContact(e.target.value)}
           />
         </div>
-        <button>Submit</button>
+       { !isSubmitted && <button>Submit</button>}
+       { isSubmitted && <button onClick={navigateHome}>Close</button>}
       </form>
     </div>
   );

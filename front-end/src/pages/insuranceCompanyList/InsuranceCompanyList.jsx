@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import './insuranceCompanyList.css'
 
 const InsuranceCompanyList = () => {
     const [insuranceCompanyList, setInsuranceCompanyList] = useState([])
@@ -48,9 +49,9 @@ const handleClaim = (insuranceCompanyId) => {
 }
 
   return (
-    <div>
+    <div className='insurance-company-claim-container'>
         <h1>Insurance Company List</h1>
-        <table>
+        <table className='insurance-company-claim-list'>
             <thead>
                 <tr>
                     <th>Company Name</th>

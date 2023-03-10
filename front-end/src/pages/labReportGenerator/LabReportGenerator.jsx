@@ -92,6 +92,7 @@ const LabReportGenerator = () => {
         )
         .then((data) => {
             console.log(data, "data");
+            alert("Successfully Uploaded");
         }
         );
         
@@ -134,7 +135,7 @@ const LabReportGenerator = () => {
           </tr>
         </thead>
         <tbody>
-          {labTests.map((test, index) => (
+          {labTests.length > 0 && labTests.map((test, index) => (
             <tr key={test.value}>
               <td>{test.label}</td>
               <td>

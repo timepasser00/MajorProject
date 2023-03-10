@@ -59,7 +59,7 @@ useEffect(() => {
             <th>Test</th>
             <th>Result</th>
           </tr>
-          {tests.slice(startIndex, endIndex).map((test, index) => (
+          {tests.length > 0 && tests.slice(startIndex, endIndex).map((test, index) => (
             <tr key={index}>
               <td>{test.name}</td>
               <td>{test.result}</td>

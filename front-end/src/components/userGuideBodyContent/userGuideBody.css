@@ -1,0 +1,19 @@
+
+.content-title{
+    font-size: 25px;
+}
+
+
+/* .patient-user-guide-body-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+} */
+
+.content{
+    padding: 2px;
+    border-bottom: 1px solid gray;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}

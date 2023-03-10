@@ -13,26 +13,50 @@ const HospitalList = () => {
 
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
-  console.log(keyword, "keyword");
+
+  const searchType=searchParams.get("searchType") || "";
+  const searchText=searchParams.get("searchText") || "";
+
+  // console.log(keyword, "keyword");
   const handleNavigation = (id) => {
     console.log(id, "id");
     navigate(`/hospital/${id}`);
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3001/patient/searchHospital/${keyword}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFlag(true);
-        // console.log(hospitals, 'hospitals')
-        console.log(data, "data");
-        // const {hospital}=data
-        // setHospitals({hospital})
-        console.log(hospitals, "hospitals");
-        setHospitals(data);
-        setLoading(false);
-      });
-  }, [keyword]);
+  //   fetch(`http://localhost:3001/patient/searchHospital/${keyword}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setFlag(true);
+  //       // console.log(hospitals, 'hospitals')
+  //       console.log(data, "data");
+  //       // const {hospital}=data
+  //       // setHospitals({hospital})
+  //       console.log(hospitals, "hospitals");
+  //       setHospitals(data);
+  //       setLoading(false);
+  //     });
+  // }, [keyword]);
+  fetch(`http://localhost:3001/patient/searchHospital/`
+  , {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify({searchText,searchType}),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setFlag(true);
+      // console.log(hospitals, 'hospitals')
+      console.log(data, "data");
+      // const {hospital}=data
+      // setHospitals({hospital})
+      console.log(hospitals, "hospitals");
+      setHospitals(data);
+      setLoading(false);
+    });
+}, [searchText,searchType]);
 
   // console.log(hospitals.hopital, 'hospitals.hopital')
 

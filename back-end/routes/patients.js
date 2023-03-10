@@ -3,6 +3,7 @@ const {
   registerDetails,
   getDetails,
   searchHospital,
+  searchLab,
   searchHospitalForAppointment,
   getAvailableSlots,
   bookAppointment,
@@ -14,7 +15,8 @@ const {
   approveInsuranceCompany,
   getDoctorRatings,
   doctorRatings,
-  isDoctorApproved
+  isDoctorApproved,
+  removeDoctor
 } = require("../controller/patientController");
 const { checkSignUp } = require("../middleware/signUp");
 const router = express.Router();
@@ -24,6 +26,7 @@ router.post("/patientDetails", registerDetails);
 // router.post("/patientPersonalDetails", getDetails);
 
 router.get("/searchHospital/:query", searchHospital);
+router.get("/searchLab/:query", searchLab);
 router.post("/searchHospital", searchHospitalForAppointment);
 router.post("/availableSlots/:doctorId", getAvailableSlots);
 router.post("/bookAppointment/:doctorId", bookAppointment);
@@ -37,4 +40,5 @@ router.get("/getDetails/:id", getDetails);
 router.post("/doctorRatings", doctorRatings);
 router.get("/getDoctorRatings/:doctorId", getDoctorRatings);
 router.get("/isDoctorApproved/:doctorId/:patientWalletAddress", isDoctorApproved);
+router.post("/removeDoctor",removeDoctor);
 module.exports = router;

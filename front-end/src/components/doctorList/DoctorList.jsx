@@ -6,12 +6,12 @@ import BookAppointmentForm from "../bookAppointmentForm/BookAppointmentForm";
 // import StarRatings from './react-star-ratings';
 import ReactStars from "react-rating-stars-component";
 
-
 import "./doctorList.css";
 import { useSelector } from "react-redux";
 
 const DoctorList = (props) => {
-  const userType= useSelector(state => state.category);
+  const userType = useSelector((state) => state.category);
+  const currUserId = useSelector((state) => state.userId);
   const walletAddress = useSelector((state) => state.walletAddress);
   const [doctor, setDoctor] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -22,7 +22,9 @@ const DoctorList = (props) => {
   const [modal, setModal] = useState(false);
   const [doctorId, setDoctorId] = useState("");
   const [doctorRating, setDoctorRating] = useState(1);
- 
+  const [approvedCount, setApprovedCount] = useState(0);
+  const [requiredRating, setRequiredRating] = useState(0);
+  const [approved, setApproved] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3001/hospital/getAllDoctors/${props.id}`, {
@@ -41,24 +43,25 @@ const DoctorList = (props) => {
         // console.log(arrData, "hospitalId");
         let doctor = data.doctors;
         setDoctor(doctor);
-       const newDoctorList=[];
+        setFilteredDoctors(doctor);
+        const newDoctorList = [];
 
-
-       
-const promises = doctor.map(d => isDoctorApproved(d._id))
-Promise.all(promises).then(approvalList => {
-  const newDoctorList = doctor.map((d, i) => ({...d, isApproved: approvalList[i]}))
-  // update state with newDoctorList
-  console.log(newDoctorList,"new doctor list")
-  setDoctor(newDoctorList)
-})
-      //  setDoctor(newDoctorList);
-      //  console.log(newDoctorList,"new doc list")
-        
+        const promises = doctor.map((d) => isDoctorApproved(d._id));
+        Promise.all(promises).then((approvalList) => {
+          const newDoctorList = doctor.map((d, i) => ({
+            ...d,
+            isApproved: approvalList[i],
+          }));
+          // update state with newDoctorList
+          // console.log(newDoctorList, "new doctor list");
+          setDoctor(newDoctorList);
+        });
+        //  setDoctor(newDoctorList);
+        //  console.log(newDoctorList,"new doc list")
 
         console.log(doctor, "doctor");
       });
-      console.log(walletAddress, "walletAddress");
+    console.log(walletAddress, "walletAddress");
   }, []);
   const handleDoctorSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
@@ -70,13 +73,11 @@ Promise.all(promises).then(approvalList => {
       );
     });
     setFilteredDoctors(filteredDoctors);
-
   };
   const handleClick = (id) => {
     setModal(!modal);
     setDoctorId(id);
   };
-  
 
   const handleDoctorApproval = (id) => {
     fetch(`http://localhost:3001/patient/approveDoctor`, {
@@ -89,25 +90,19 @@ Promise.all(promises).then(approvalList => {
         doctorId: id,
       }),
     })
-
       .then((res) => res.json())
       .then((data) => {
+        setApprovedCount(approvedCount + 1);
+        // doctor = doctor.filter((d)=>d._id !== id)
         console.log(data, "data");
-      }
-      ).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err, "error");
-      }
-      );
-        
-
-    
+      });
   };
   const ratingChanged = (newRating) => {
     console.log(newRating);
     setDoctorRating(newRating);
-
-    
-
   };
   const getRating = (id) => {
     fetch(`http://localhost:3001/patient/getDoctorRatings/${id}`, {
@@ -119,33 +114,30 @@ Promise.all(promises).then(approvalList => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "data");
-      }
-      ).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err, "error");
-      }
+      });
+  };
+  const isDoctorApproved = async (id) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/patient/isDoctorApproved/${id}/${walletAddress}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-  }
-  const isDoctorApproved =async (id) => {
-  
-  try {
-    const res = await fetch(`http://localhost:3001/patient/isDoctorApproved/${id}/${walletAddress}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-    console.log(data, "data");
-    return data.isApproved;
-  } catch (err) {
-    console.log(err, "error");
-    return false;
-  }
-     
-  }
-
-
-
+      const data = await res.json();
+      console.log(data, "data");
+      return data.isApproved;
+    } catch (err) {
+      console.log(err, "error");
+      return false;
+    }
+  };
 
   const handleRating = (id) => {
     fetch(`http://localhost:3001/patient/doctorRatings`, {
@@ -159,25 +151,47 @@ Promise.all(promises).then(approvalList => {
         star: doctorRating,
       }),
     })
-
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "data");
-      }
-      ).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err, "error");
-      }
-      );
-    }
+      });
+  };
+
+  const handleSearchByRating = () => {
+    // setRequiredRating(e.target.value);
+    let docFilteredByRating = doctor.filter(
+      (f) => f.avgRating >= requiredRating
+    );
+    setFilteredDoctors(docFilteredByRating);
+  };
 
   return (
     <div>
       <div>
+        <label>Doctor Name : </label>
         <input
           type="text"
           placeholder="Search"
           onChange={(e) => handleDoctorSearch(e.target.value)}
         />
+        {/* <input
+          type="text"
+          placeholder="Search"
+          onChange={(e) => handleSearchByRating(e.target.value)}
+        /> */}
+        <div>
+          <label>Rating : </label>
+          <select onChange={(e) => setRequiredRating(e.target.value)}>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
+          </select>
+          <button onClick={handleSearchByRating}>Submit</button>
+        </div>
       </div>
 
       <div className="doctor-list">
@@ -191,44 +205,70 @@ Promise.all(promises).then(approvalList => {
               <th>Book Appointement</th>
               <th>Approve Doctor </th>
               <th>Doctor Ratings</th>
-              <th>Rate your Doctor</th>
+              {/* {userType === 'patient' && <th>Rate your Doctor</th>} */}
             </tr>
           </thead>
           <tbody>
             {filteredDoctors &&
               filteredDoctors.map((doctor) => (
-                <tr>
-                  <td>{doctor.firstName}</td>
-                  <td>{doctor.lastName}</td>
-                  <td>{doctor.qualification}</td>
+                <>
+                  {console.log(doctor)}
+                  <tr>
+                    <td>{doctor.firstName}</td>
+                    <td>{doctor.lastName}</td>
+                    <td>{doctor.qualification}</td>
 
-                  <td>{doctor.yearOfExperience}</td>
-                  {/* <td><button onClick={() => setModal(!modal), setDoctorId(doctor.id)} >Book Appointment</button></td> */}
-                  <td>
-                    {" "}
-                    <button onClick={() => handleClick(doctor._id)}>
-                      Book appointment
-                    </button>
-                  </td>
-                    <td> <button onClick={() => handleDoctorApproval(doctor._id)}> approve  </button></td>
-                    <td  >    <ReactStars
-    count={5}
-    value={doctor.avgRating}
-    edit={false}
-    // onChange={ratingChanged}
-    size={24}
-    activeColor="#ffd700"
-  />    ,</td>
-  { doctor.isApproved && <td>    <ReactStars
-    count={5}
-    value={doctorRating}
-    edit={true}
-    onChange={ratingChanged}
-    size={24}
-    activeColor="#ffd700"
-  /><button onClick={() =>handleRating(doctor._id)}>submit</button>,</td>}
-                  {/* <td>{doctor.specialization}</td> */}
-                </tr>
+                    <td>{doctor.yearOfExperience}</td>
+                    {/* <td><button onClick={() => setModal(!modal), setDoctorId(doctor.id)} >Book Appointment</button></td> */}
+                    <td>
+                      {" "}
+                      <button onClick={() => handleClick(doctor._id)}>
+                        Book appointment
+                      </button>
+                    </td>
+                    <td>
+                      {doctor.approvedBy.includes(currUserId) ? (
+                        <span>Approved </span>
+                      ) : (
+                        <button
+                          onClick={() => handleDoctorApproval(doctor._id)}
+                        >
+                          Approve
+                        </button>
+                      )}
+                    </td>
+                    <td>
+                      {" "}
+                      <ReactStars
+                        count={5}
+                        value={doctor.avgRating}
+                        edit={false}
+                        // onChange={ratingChanged}
+                        size={24}
+                        activeColor="#ffd700"
+                      />{" "}
+                      ,
+                    </td>
+                    {/* {doctor.isApproved && (
+                    <td>
+                      {" "}
+                      <ReactStars
+                        count={5}
+                        value={doctorRating}
+                        edit={true}
+                        onChange={ratingChanged}
+                        size={24}
+                        activeColor="#ffd700"
+                      />
+                      <button onClick={() => handleRating(doctor._id)}>
+                        submit
+                      </button>
+                      ,
+                    </td>
+                  )} */}
+                    {/* <td>{doctor.specialization}</td> */}
+                  </tr>
+                </>
               ))}
           </tbody>
         </table>
